@@ -1,0 +1,4492 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Paystack API",
+    "description" : "The **Paystack** API Collection is a collection of all endpoints that merchants and developers can take advantage of to build financial solutions in Nigeria",
+    "contact" : { },
+    "license" : { },
+    "version" : "2cfbdef8-e47c-40a9-8e72-0d330c39052f"
+  },
+  "externalDocs" : { },
+  "servers" : [ {
+    "url" : "https://api.paystack.co"
+  } ],
+  "security" : [ {
+    "bearerAuth" : [ ]
+  } ],
+  "paths" : {
+    "/transaction/initialize" : {
+      "post" : {
+        "tags" : [ "Transactions" ],
+        "summary" : "Initialize Transaction",
+        "description" : "**Body Params**\n- **email** (_required_) - Customer's email address\n- **amount** (_required_) - Amount in kobo\n- **reference** - Generate a reference or leave this param blank for Paystack to generate one for you\n- **callback_url** - Overrides the callback URL set on Paystack dashboard.\n- **plan** - If transaction is to create a subscription to a predefined plan, provide plan code here. This would invalidate the value provided in `amount`\n- **invoice_limit** - Number of times to charge customer during subscription to plan\n- **metadata** - Stringified JSON object. Add a `custom_fields` attribute which has an array of objects if you would like the fields to be added to your transaction when displayed on the dashboard.\n- **subaccount** - The code for the subaccount that owns the payment.\n- **transaction_charge** - A flat fee to charge the subaccount for this transaction, in kobo. This overrides the split percentage set when the subaccount was created. Ideally, you will need to use this if you are splitting in flat rates (since subaccount creation only allows for percentage split).\n- **bearer** - Who bears Paystack charges? `account` or `subaccount` (defaults to `account`).\n- **channels** - Send us 'card' or 'bank' or 'card','bank' as an array to specify what options to show the user paying",
+        "operationId" : "InitializeTransaction",
+        "parameters" : [ {
+          "name" : "Content-Types",
+          "in" : "header",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "application/json"
+          }
+        }, {
+          "name" : "Authorizations",
+          "in" : "header",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "Bearer "
+          }
+        } ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **email** (_required_) - Customer's email address\n- **amount** (_required_) - Amount in kobo\n- **reference** - Generate a reference or leave this param blank for Paystack to generate one for you\n- **callback_url** - Overrides the callback URL set on Paystack dashboard.\n- **plan** - If transaction is to create a subscription to a predefined plan, provide plan code here. This would invalidate the value provided in `amount`\n- **invoice_limit** - Number of times to charge customer during subscription to plan\n- **metadata** - Stringified JSON object. Add a `custom_fields` attribute which has an array of objects if you would like the fields to be added to your transaction when displayed on the dashboard.\n- **subaccount** - The code for the subaccount that owns the payment.\n- **transaction_charge** - A flat fee to charge the subaccount for this transaction, in kobo. This overrides the split percentage set when the subaccount was created. Ideally, you will need to use this if you are splitting in flat rates (since subaccount creation only allows for percentage split).\n- **bearer** - Who bears Paystack charges? `account` or `subaccount` (defaults to `account`).\n- **channels** - Send us 'card' or 'bank' or 'card','bank' as an array to specify what options to show the user paying",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "string",
+                "example" : "{\n  \"email\": \"customer@email.com\",\n  \"amount\": \"5000\",\n  \"currency\": \"NGN\",\n//   \"callback_url\": \"http://url.com\",\n  \"metadata\": {\n  \t\"cancel_action\": \"http://cancelurl.com\"\n  }\n}"
+              },
+              "example" : "{\n  \"email\": \"customer@email.com\",\n  \"amount\": \"5000\",\n  \"currency\": \"NGN\",\n//   \"callback_url\": \"http://url.com\",\n  \"metadata\": {\n  \t\"cancel_action\": \"http://cancelurl.com\"\n  }\n}"
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Initialize Transaction",
+            "content" : {
+              "application/json; charset=utf-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/200"
+                },
+                "example" : {
+                  "status" : true,
+                  "message" : "Authorization URL created",
+                  "data" : {
+                    "authorization_url" : "https://paystack.com/secure/5q70ef6pu1dq4qn",
+                    "access_code" : "5q70ef6pu1dq4qn",
+                    "reference" : "XXXREF"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/verify/REFRENCE" : {
+      "get" : {
+        "tags" : [ "Transactions" ],
+        "summary" : "Verify Transaction",
+        "description" : "**Path Params**\n- **reference** (_required_)",
+        "operationId" : "VerifyTransaction",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transaction" : {
+      "get" : {
+        "tags" : [ "Transactions" ],
+        "summary" : "List Transactions",
+        "description" : "**Query Params**\n- **perPage** - Specify how many records you want to retrieve per page\n- **page** - Specify exactly what page you want to retrieve\n- **customer** - Specify an ID for the customer whose transactions you want to retrieve\n- **status** - Filter transactions by status ('failed', 'success', 'abandoned')\n- **from** - A timestamp from which to start listing transaction e.g. 2016-09-24T00:00:05.000Z, 2016-09-21\n- **to** - A timestamp at which to stop listing transaction e.g. 2016-09-24T00:00:05.000Z, 2016-09-21\n- **amount** - Filter transactions by amount. Specify the amount in kobo.",
+        "operationId" : "ListTransactions",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transaction/{id}" : {
+      "get" : {
+        "tags" : [ "Transactions" ],
+        "summary" : "Fetch Transaction",
+        "description" : "**Path Params**\n- **id** (_required_) - An ID for the transaction to fetch",
+        "operationId" : "FetchTransaction",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transaction/charge_authorization" : {
+      "post" : {
+        "tags" : [ "Transactions" ],
+        "summary" : "Charge Authorization",
+        "description" : "**Body Params**\n- **reference** - Unique transaction reference. Only `-` `,` `.` `,` `=` and alphanumeric characters allowed. System will generate one if none is provided\n- **authorization_code** - (_required_) Valid authorization code to charge\n- **amount** - (_required_) Amount in kobo\n- **plan** - If transaction is to create a subscription to a predefined plan, provide plan code here\n- **currency** - Currency in which amount should be charged\n- ** email** (_required_) - Customer's email address\n- **metadata** - Add a `custom_fields` attribute which has an array of objects if you would like the fields to be added to your transaction when displayed on the dashboard.\n- **subaccount** - The code for the subaccount that owns the payment.\n- **transaction_charge** - A flat fee to charge the subaccount for this transaction, in kobo. This overrides the split percentage set when the subaccount was created. Ideally, you will need to use this if you are splitting in flat rates (since subaccount creation only allows for percentage split).\n- **bearer** - Who bears Paystack charges? `account` or `subaccount`?\n- **invoice_limit** - Number of invoices to raise during the subscription. Overrides `invoice_limit` set on plan.",
+        "operationId" : "ChargeAuthorization",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **reference** - Unique transaction reference. Only `-` `,` `.` `,` `=` and alphanumeric characters allowed. System will generate one if none is provided\n- **authorization_code** - (_required_) Valid authorization code to charge\n- **amount** - (_required_) Amount in kobo\n- **plan** - If transaction is to create a subscription to a predefined plan, provide plan code here\n- **currency** - Currency in which amount should be charged\n- ** email** (_required_) - Customer's email address\n- **metadata** - Add a `custom_fields` attribute which has an array of objects if you would like the fields to be added to your transaction when displayed on the dashboard.\n- **subaccount** - The code for the subaccount that owns the payment.\n- **transaction_charge** - A flat fee to charge the subaccount for this transaction, in kobo. This overrides the split percentage set when the subaccount was created. Ideally, you will need to use this if you are splitting in flat rates (since subaccount creation only allows for percentage split).\n- **bearer** - Who bears Paystack charges? `account` or `subaccount`?\n- **invoice_limit** - Number of invoices to raise during the subscription. Overrides `invoice_limit` set on plan.",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transaction/check_authorization" : {
+      "post" : {
+        "tags" : [ "Transactions" ],
+        "summary" : "Check Authorization",
+        "description" : "All mastercard and visa authorizations can be checked with this endpoint to know if they have funds for the payment you seek.\n\n**Body Params**\n- **authorization_code** (_required_) - Authorization code for mastercard or VISA authorization belonging to email.\n- **amount** (_required_) - Amount in kobo\n- **email** (_required_) - Customer's email address\n- **currency** - A currency for the amount we want to check\n\nIn test mode, we will return insufficient funds for an amount greater than or equal 500,000 naira.",
+        "operationId" : "CheckAuthorization",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "All mastercard and visa authorizations can be checked with this endpoint to know if they have funds for the payment you seek.\n\n**Body Params**\n- **authorization_code** (_required_) - Authorization code for mastercard or VISA authorization belonging to email.\n- **amount** (_required_) - Amount in kobo\n- **email** (_required_) - Customer's email address\n- **currency** - A currency for the amount we want to check\n\nIn test mode, we will return insufficient funds for an amount greater than or equal 500,000 naira.",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_1"
+              },
+              "example" : [ {
+                "key" : "authorization_code",
+                "value" : "AUTH_CODE",
+                "type" : "text"
+              }, {
+                "key" : "email",
+                "value" : "customer@email.com",
+                "type" : "text"
+              }, {
+                "key" : "amount",
+                "value" : "500000",
+                "type" : "text"
+              } ]
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/customer/deactivate_authorization" : {
+      "post" : {
+        "tags" : [ "Transactions" ],
+        "summary" : "Deactivate Authorization",
+        "description" : "For when the card needs to be forgotten...\n\n**Body Params**\n- **authorization_code** (_required_) - Authorization code to be deactivated\n\n",
+        "operationId" : "DeactivateAuthorization",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "For when the card needs to be forgotten...\n\n**Body Params**\n- **authorization_code** (_required_) - Authorization code to be deactivated\n\n",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_2"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transaction/timeline/{id_or_reference}" : {
+      "get" : {
+        "tags" : [ "Transactions" ],
+        "summary" : "View Transaction Timeline",
+        "operationId" : "ViewTransactionTimeline",
+        "parameters" : [ {
+          "name" : "id_or_reference",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transaction/totals" : {
+      "get" : {
+        "tags" : [ "Transactions" ],
+        "summary" : "Transaction Totals",
+        "description" : "Total amount received on your account\n\n**Query Params**\n- **from** - Lower bound of date range. Leave undefined to show totals from day one.\n- **to** - Upper bound of date range. Leave undefined to show totals till date.",
+        "operationId" : "TransactionTotals",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transaction/export" : {
+      "get" : {
+        "tags" : [ "Transactions" ],
+        "summary" : "Export Transactions",
+        "description" : "**Query Params**\n- **from** - Lower bound of date range. Leave undefined to export transactions from day one.\n- **to** - Upper bound of date range. Leave undefined to export transactions till date.\n- **settled** - Set to `true` to export only settled transactions. `false` for pending transactions. Leave undefined to export all transactions\n- **payment_page** - Specify a payment page's id to export only transactions conducted on said page\n- **customer** - Specify customer id.\n- **currency** - Currency in which you are charging the customer in.\n- **settlement** - An ID for the settlement whose transactions we should export\n- **amount** - Amount for transactions to export\n- **status** - Status for transactions to export",
+        "operationId" : "ExportTransactions",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/customer" : {
+      "get" : {
+        "tags" : [ "Customers" ],
+        "summary" : "List Customers",
+        "description" : "**Query Params**\n- **perPage** - Specify how many records you want to retrieve per page\n- **page** - Specify exactly what page you want to retrieve",
+        "operationId" : "ListCustomers",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      },
+      "post" : {
+        "tags" : [ "Customers" ],
+        "summary" : "Create Customer",
+        "description" : "**Body Params**\n- **email** (_required_) - Customer's email address\n- **first_name** - Customer's first name\n- **last_name** - Customer's last name\n- **phone** - Customer's phone number\n- **metadata** - A set of key/value pairs that you can attach to the customer. It can be used to store additional information in a structured format.",
+        "operationId" : "CreateCustomer",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **email** (_required_) - Customer's email address\n- **first_name** - Customer's first name\n- **last_name** - Customer's last name\n- **phone** - Customer's phone number\n- **metadata** - A set of key/value pairs that you can attach to the customer. It can be used to store additional information in a structured format.",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_3"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/customer/{id_or_customer_code}" : {
+      "get" : {
+        "tags" : [ "Customers" ],
+        "summary" : "Fetch Customer",
+        "description" : "**Query Params**\n- **exclude_transactions** - By default, fetching a customer returns all their transactions. Set this to true to disable this behaviour.",
+        "operationId" : "FetchCustomer",
+        "parameters" : [ {
+          "name" : "id_or_customer_code",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/customer/{ID_OR_CUSTOMER_CODE}" : {
+      "put" : {
+        "tags" : [ "Customers" ],
+        "summary" : "Update Customer",
+        "description" : "**Body Params**\n- **first_name** - Customer's first name\n- **last_name** - Customer's last name\n- **phone** - Customer's phone number\n- **metadata** - A set of key/value pairs that you can attach to the customer. It can be used to store additional information in a structured format.",
+        "operationId" : "UpdateCustomer",
+        "parameters" : [ {
+          "name" : "ID_OR_CUSTOMER_CODE",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **first_name** - Customer's first name\n- **last_name** - Customer's last name\n- **phone** - Customer's phone number\n- **metadata** - A set of key/value pairs that you can attach to the customer. It can be used to store additional information in a structured format.",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_4"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/customer/set_risk_action" : {
+      "post" : {
+        "tags" : [ "Customers" ],
+        "summary" : "White/blacklist Customer",
+        "description" : "**Body Params**\n- **customer** - Customer's ID, code, or email address\n- **risk_action** - One of the possible risk actions. `allow` to whitelist. `deny` to blacklist.",
+        "operationId" : "White/blacklistCustomer",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **customer** - Customer's ID, code, or email address\n- **risk_action** - One of the possible risk actions. `allow` to whitelist. `deny` to blacklist.",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_5"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/subaccount" : {
+      "get" : {
+        "tags" : [ "Subaccounts" ],
+        "summary" : "List Subaccounts",
+        "description" : "**Query Params**\n- **perPage** - Specify how many records you want to retrieve per page\n- **page** - Specify exactly what page you want to retrieve",
+        "operationId" : "ListSubaccounts",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      },
+      "post" : {
+        "tags" : [ "Subaccounts" ],
+        "summary" : "Create Subaccount",
+        "description" : "**Body Params**\n- **business_name** (_required_) - Name of business for subaccount\n- **settlement_bank** (_required_) - Name of Bank (see list of accepted names by calling [List Banks](https://developers.paystack.co/v1.0/docs/list-banks)\n- **account_number** (_required_) - NUBAN Bank Account Number\n- **percentage_charge** (_required_) - What is the default percentage charged when receiving on behalf of this subaccount?\n- **primary_contact_email** - A contact email for the subaccount\n- **primary_contact_name** - A name for the contact person for this subaccount\n- **primary_contact_phone** - A phone number to call for this subaccount\n- **metadata** - Stringified JSON object\n- **settlement_schedule** - Any of `auto`, `weekly`, `monthly`, `manual`. Auto means payout is T+1 and manual means payout to the subaccount should only be made when requested.\n\nReceive payments for the created subaccount by providing their code when doing a transaction. More details here: [Split Payments Overview](https://developers.paystack.co/v1.0/docs/split-payments-overview)",
+        "operationId" : "CreateSubaccount",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **business_name** (_required_) - Name of business for subaccount\n- **settlement_bank** (_required_) - Name of Bank (see list of accepted names by calling [List Banks](https://developers.paystack.co/v1.0/docs/list-banks)\n- **account_number** (_required_) - NUBAN Bank Account Number\n- **percentage_charge** (_required_) - What is the default percentage charged when receiving on behalf of this subaccount?\n- **primary_contact_email** - A contact email for the subaccount\n- **primary_contact_name** - A name for the contact person for this subaccount\n- **primary_contact_phone** - A phone number to call for this subaccount\n- **metadata** - Stringified JSON object\n- **settlement_schedule** - Any of `auto`, `weekly`, `monthly`, `manual`. Auto means payout is T+1 and manual means payout to the subaccount should only be made when requested.\n\nReceive payments for the created subaccount by providing their code when doing a transaction. More details here: [Split Payments Overview](https://developers.paystack.co/v1.0/docs/split-payments-overview)",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_6"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/subaccount/{id_or_slug}" : {
+      "get" : {
+        "tags" : [ "Subaccounts" ],
+        "summary" : "Fetch Subaccount",
+        "operationId" : "FetchSubaccount",
+        "parameters" : [ {
+          "name" : "id_or_slug",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "responses" : {
+          "200" : { }
+        }
+      },
+      "put" : {
+        "tags" : [ "Subaccounts" ],
+        "summary" : "Update Subaccount",
+        "operationId" : "UpdateSubaccount",
+        "parameters" : [ {
+          "name" : "id_or_slug",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_7"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/plan" : {
+      "get" : {
+        "tags" : [ "Plans" ],
+        "summary" : "List Plans",
+        "description" : "**Query Params**\n- **perPage** - Specify how many records you want to retrieve per page\n- **page** - Specify exactly what page you want to retrieve\n- **interval** - Filter list by plans with specified interval\n- **amount** - Filter list by plans with specified amount (in kobo)",
+        "operationId" : "ListPlans",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      },
+      "post" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Create Plan",
+        "description" : "**Body Params**\n- **name** (_required_) - Name of plan\n- **description** - Short description of plan\n- **amount** (_required_) - Amount to be charged in kobo\n- **interval** (_required_) - Interval in words. Valid intervals are `hourly`, `daily`, `weekly`, `monthly`, `annually`.\n- **send_invoices** - Set to false if you don't want invoices to be sent to your customers\n- **currency** - Currency in which amount is set\n- **invoice_limit** - Number of invoices to raise during subscription to this plan. Can be overridden by specifying an `invoice_limit` while subscribing.",
+        "operationId" : "CreatePlan",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **name** (_required_) - Name of plan\n- **description** - Short description of plan\n- **amount** (_required_) - Amount to be charged in kobo\n- **interval** (_required_) - Interval in words. Valid intervals are `hourly`, `daily`, `weekly`, `monthly`, `annually`.\n- **send_invoices** - Set to false if you don't want invoices to be sent to your customers\n- **currency** - Currency in which amount is set\n- **invoice_limit** - Number of invoices to raise during subscription to this plan. Can be overridden by specifying an `invoice_limit` while subscribing.",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_8"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/plan/id_or_plan_code" : {
+      "get" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Fetch Plan",
+        "operationId" : "FetchPlan",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/plan/{id_or_plan_code}" : {
+      "put" : {
+        "tags" : [ "Plans" ],
+        "summary" : "Update Plan",
+        "description" : "**Body Params**\n- **name** - Name of plan\n- **description** - Short description of plan\n- **amount** - Amount to be charged in kobo. Will override the amount for existing subscriptions.\n- **interval** - Interval in words. Valid intervals are `hourly`, `daily`, `weekly`, `monthly`, `annually`.\n- **send_invoices** - Set to false if you don't want invoices to be sent to your customers.\n- **send_sms** - Set to false if you don't want text messages to be sent to your customers\n- **currency** - Currency in which amount is set\n- **invoice_limit** - Number of invoices to raise during subscription to this plan. Will not override `invoice_limit` set on active subscriptions.",
+        "operationId" : "UpdatePlan",
+        "parameters" : [ {
+          "name" : "id_or_plan_code",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **name** - Name of plan\n- **description** - Short description of plan\n- **amount** - Amount to be charged in kobo. Will override the amount for existing subscriptions.\n- **interval** - Interval in words. Valid intervals are `hourly`, `daily`, `weekly`, `monthly`, `annually`.\n- **send_invoices** - Set to false if you don't want invoices to be sent to your customers.\n- **send_sms** - Set to false if you don't want text messages to be sent to your customers\n- **currency** - Currency in which amount is set\n- **invoice_limit** - Number of invoices to raise during subscription to this plan. Will not override `invoice_limit` set on active subscriptions.",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_9"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/subscription" : {
+      "get" : {
+        "tags" : [ "Subscriptions" ],
+        "summary" : "List Subscriptions",
+        "description" : "**Query Params**\n- **perPage** - Specify how many records you want to retrieve per page\n- **page** - Specify exactly what page you want to retrieve\n- **customer** - Filter by Customer ID\n- **plan** - Filter by Plan ID",
+        "operationId" : "ListSubscriptions",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "List Subscriptions",
+            "content" : {
+              "application/json; charset=utf-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/200"
+                },
+                "example" : {
+                  "status" : true,
+                  "message" : "Subscriptions retrieved",
+                  "data" : [ {
+                    "customer" : {
+                      "first_name" : "employee14",
+                      "last_name" : "demo",
+                      "email" : "employee14@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_7o5rpgyihn2ccui",
+                      "risk_action" : "default",
+                      "id" : 1395761,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:45:04.000Z",
+                      "updatedAt" : "2018-01-14T13:45:04.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product G186WMRJ",
+                      "plan_code" : "PLN_qajv0uplnjz2y05",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8235,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:44:21.000Z",
+                      "updatedAt" : "2018-01-22T13:44:21.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3658609,
+                    "domain" : "test",
+                    "start" : 1516628816,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_2gc07u0dqk1yb1f",
+                    "email_token" : "b2jd0eo7yacv98p",
+                    "easy_cron_id" : "493980",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:46:50.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36190,
+                    "createdAt" : "2018-01-22T13:46:56.000Z",
+                    "updatedAt" : "2018-01-22T13:46:58.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee13",
+                      "last_name" : "demo",
+                      "email" : "employee13@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_4krtj6y63m5fobz",
+                      "risk_action" : "default",
+                      "id" : 1395760,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:45:02.000Z",
+                      "updatedAt" : "2018-01-14T13:45:02.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product G186WMRJ",
+                      "plan_code" : "PLN_qajv0uplnjz2y05",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8235,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:44:21.000Z",
+                      "updatedAt" : "2018-01-22T13:44:21.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625849,
+                    "domain" : "test",
+                    "start" : 1516628814,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_75o3he3uuzd78wp",
+                    "email_token" : "3wvpgdqtwxpixq2",
+                    "easy_cron_id" : "493979",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:46:50.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36189,
+                    "createdAt" : "2018-01-22T13:46:54.000Z",
+                    "updatedAt" : "2018-01-22T13:46:55.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee11",
+                      "last_name" : "demo",
+                      "email" : "employee11@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_fs968067v1doow0",
+                      "risk_action" : "default",
+                      "id" : 1395756,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:52.000Z",
+                      "updatedAt" : "2018-01-14T13:44:52.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product G186WMRJ",
+                      "plan_code" : "PLN_qajv0uplnjz2y05",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8235,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:44:21.000Z",
+                      "updatedAt" : "2018-01-22T13:44:21.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3620114,
+                    "domain" : "test",
+                    "start" : 1516628812,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_mb83ddoe9o1qfsq",
+                    "email_token" : "t93p7dxbgicmyrb",
+                    "easy_cron_id" : "493978",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:46:50.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36188,
+                    "createdAt" : "2018-01-22T13:46:52.000Z",
+                    "updatedAt" : "2018-01-22T13:46:53.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee13",
+                      "last_name" : "demo",
+                      "email" : "employee13@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_4krtj6y63m5fobz",
+                      "risk_action" : "default",
+                      "id" : 1395760,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:45:02.000Z",
+                      "updatedAt" : "2018-01-14T13:45:02.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product YBZ84RVZCOZ3",
+                      "plan_code" : "PLN_pl42mdegb1pay14",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8232,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:28:01.000Z",
+                      "updatedAt" : "2018-01-22T13:28:01.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625849,
+                    "domain" : "test",
+                    "start" : 1516627795,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_bn9ab5zt3jxjwn3",
+                    "email_token" : "vrc1x9i9dxha8s9",
+                    "easy_cron_id" : "493969",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:29:50.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36183,
+                    "createdAt" : "2018-01-22T13:29:55.000Z",
+                    "updatedAt" : "2018-01-22T13:29:55.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee12",
+                      "last_name" : "emo",
+                      "email" : "employee12@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_5z5i6sw36jx2wlu",
+                      "risk_action" : "default",
+                      "id" : 1395757,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:56.000Z",
+                      "updatedAt" : "2018-01-14T13:44:56.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product YBZ84RVZCOZ3",
+                      "plan_code" : "PLN_pl42mdegb1pay14",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8232,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:28:01.000Z",
+                      "updatedAt" : "2018-01-22T13:28:01.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625717,
+                    "domain" : "test",
+                    "start" : 1516627793,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_jry95yp22952v32",
+                    "email_token" : "vcqc4wgdcefxcye",
+                    "easy_cron_id" : "493968",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:29:50.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36182,
+                    "createdAt" : "2018-01-22T13:29:53.000Z",
+                    "updatedAt" : "2018-01-22T13:29:53.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee11",
+                      "last_name" : "demo",
+                      "email" : "employee11@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_fs968067v1doow0",
+                      "risk_action" : "default",
+                      "id" : 1395756,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:52.000Z",
+                      "updatedAt" : "2018-01-14T13:44:52.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product YBZ84RVZCOZ3",
+                      "plan_code" : "PLN_pl42mdegb1pay14",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8232,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:28:01.000Z",
+                      "updatedAt" : "2018-01-22T13:28:01.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3620114,
+                    "domain" : "test",
+                    "start" : 1516627792,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_pz6388b8g98bhr4",
+                    "email_token" : "1q8bnm7nfulshpv",
+                    "easy_cron_id" : "493967",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:29:50.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36181,
+                    "createdAt" : "2018-01-22T13:29:52.000Z",
+                    "updatedAt" : "2018-01-22T13:29:52.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee11",
+                      "last_name" : "demo",
+                      "email" : "employee11@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_fs968067v1doow0",
+                      "risk_action" : "default",
+                      "id" : 1395756,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:52.000Z",
+                      "updatedAt" : "2018-01-14T13:44:52.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product MY8M12AD6AMV",
+                      "plan_code" : "PLN_0n5mh1zojhq0yw2",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8231,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:14:59.000Z",
+                      "updatedAt" : "2018-01-22T13:14:59.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3620114,
+                    "domain" : "test",
+                    "start" : 1516627084,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_6a1ueijc69dn8ia",
+                    "email_token" : "s1fjsq8aia1r4mp",
+                    "easy_cron_id" : "493966",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:17:58.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36180,
+                    "createdAt" : "2018-01-22T13:18:04.000Z",
+                    "updatedAt" : "2018-01-22T13:18:09.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee14",
+                      "last_name" : "demo",
+                      "email" : "employee14@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_7o5rpgyihn2ccui",
+                      "risk_action" : "default",
+                      "id" : 1395761,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:45:04.000Z",
+                      "updatedAt" : "2018-01-14T13:45:04.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product MY8M12AD6AMV",
+                      "plan_code" : "PLN_0n5mh1zojhq0yw2",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8231,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:14:59.000Z",
+                      "updatedAt" : "2018-01-22T13:14:59.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3658609,
+                    "domain" : "test",
+                    "start" : 1516627082,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_0530l7rkso3hlk6",
+                    "email_token" : "30ed3a6ekqowv6e",
+                    "easy_cron_id" : "493965",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:17:58.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36179,
+                    "createdAt" : "2018-01-22T13:18:02.000Z",
+                    "updatedAt" : "2018-01-22T13:18:02.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee13",
+                      "last_name" : "demo",
+                      "email" : "employee13@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_4krtj6y63m5fobz",
+                      "risk_action" : "default",
+                      "id" : 1395760,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:45:02.000Z",
+                      "updatedAt" : "2018-01-14T13:45:02.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product MY8M12AD6AMV",
+                      "plan_code" : "PLN_0n5mh1zojhq0yw2",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8231,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:14:59.000Z",
+                      "updatedAt" : "2018-01-22T13:14:59.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625849,
+                    "domain" : "test",
+                    "start" : 1516627080,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_sxach1ectrbsdfh",
+                    "email_token" : "n0q52muafk5g2lz",
+                    "easy_cron_id" : "493964",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:17:58.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36178,
+                    "createdAt" : "2018-01-22T13:18:00.000Z",
+                    "updatedAt" : "2018-01-22T13:18:01.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee12",
+                      "last_name" : "emo",
+                      "email" : "employee12@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_5z5i6sw36jx2wlu",
+                      "risk_action" : "default",
+                      "id" : 1395757,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:56.000Z",
+                      "updatedAt" : "2018-01-14T13:44:56.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product ZAQYYS0CU9J2",
+                      "plan_code" : "PLN_hnhpbv7t6ifny7s",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8230,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:04:17.000Z",
+                      "updatedAt" : "2018-01-22T13:04:17.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625717,
+                    "domain" : "test",
+                    "start" : 1516626884,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_x7mnc2hfxgn9mvy",
+                    "email_token" : "vmlymyc283ubnr2",
+                    "easy_cron_id" : "493963",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:14:39.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36177,
+                    "createdAt" : "2018-01-22T13:14:44.000Z",
+                    "updatedAt" : "2018-01-22T13:14:45.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee11",
+                      "last_name" : "demo",
+                      "email" : "employee11@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_fs968067v1doow0",
+                      "risk_action" : "default",
+                      "id" : 1395756,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:52.000Z",
+                      "updatedAt" : "2018-01-14T13:44:52.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product ZAQYYS0CU9J2",
+                      "plan_code" : "PLN_hnhpbv7t6ifny7s",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8230,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:04:17.000Z",
+                      "updatedAt" : "2018-01-22T13:04:17.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3620114,
+                    "domain" : "test",
+                    "start" : 1516626883,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_ftf7tfkcah7oyda",
+                    "email_token" : "vdtc2b8hyahc226",
+                    "easy_cron_id" : "493962",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:14:39.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36176,
+                    "createdAt" : "2018-01-22T13:14:43.000Z",
+                    "updatedAt" : "2018-01-22T13:14:44.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee14",
+                      "last_name" : "demo",
+                      "email" : "employee14@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_7o5rpgyihn2ccui",
+                      "risk_action" : "default",
+                      "id" : 1395761,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:45:04.000Z",
+                      "updatedAt" : "2018-01-14T13:45:04.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product ZAQYYS0CU9J2",
+                      "plan_code" : "PLN_hnhpbv7t6ifny7s",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8230,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:04:17.000Z",
+                      "updatedAt" : "2018-01-22T13:04:17.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3658609,
+                    "domain" : "test",
+                    "start" : 1516626881,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_h1cs0ntq45hf4cp",
+                    "email_token" : "ps5t7usida5kygw",
+                    "easy_cron_id" : "493961",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:14:39.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36175,
+                    "createdAt" : "2018-01-22T13:14:41.000Z",
+                    "updatedAt" : "2018-01-22T13:14:42.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee13",
+                      "last_name" : "demo",
+                      "email" : "employee13@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_4krtj6y63m5fobz",
+                      "risk_action" : "default",
+                      "id" : 1395760,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:45:02.000Z",
+                      "updatedAt" : "2018-01-14T13:45:02.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product DLPX8GQMHZXV",
+                      "plan_code" : "PLN_ucpz4nthvhaon0z",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8229,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:02:31.000Z",
+                      "updatedAt" : "2018-01-22T13:02:31.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625849,
+                    "domain" : "test",
+                    "start" : 1516626186,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_53m01v14zhjivhu",
+                    "email_token" : "zz2rtsancgqup7r",
+                    "easy_cron_id" : "493959",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:02:58.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36173,
+                    "createdAt" : "2018-01-22T13:03:06.000Z",
+                    "updatedAt" : "2018-01-22T13:03:06.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee12",
+                      "last_name" : "emo",
+                      "email" : "employee12@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_5z5i6sw36jx2wlu",
+                      "risk_action" : "default",
+                      "id" : 1395757,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:56.000Z",
+                      "updatedAt" : "2018-01-14T13:44:56.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product DLPX8GQMHZXV",
+                      "plan_code" : "PLN_ucpz4nthvhaon0z",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8229,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:02:31.000Z",
+                      "updatedAt" : "2018-01-22T13:02:31.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625717,
+                    "domain" : "test",
+                    "start" : 1516626183,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_5fs6ihqndix93m4",
+                    "email_token" : "u3m15963gd0olha",
+                    "easy_cron_id" : "493958",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:02:58.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36172,
+                    "createdAt" : "2018-01-22T13:03:03.000Z",
+                    "updatedAt" : "2018-01-22T13:03:05.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee11",
+                      "last_name" : "demo",
+                      "email" : "employee11@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_fs968067v1doow0",
+                      "risk_action" : "default",
+                      "id" : 1395756,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:52.000Z",
+                      "updatedAt" : "2018-01-14T13:44:52.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product DLPX8GQMHZXV",
+                      "plan_code" : "PLN_ucpz4nthvhaon0z",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8229,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T13:02:31.000Z",
+                      "updatedAt" : "2018-01-22T13:02:31.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3620114,
+                    "domain" : "test",
+                    "start" : 1516626180,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_ejrv62w0xi84tcf",
+                    "email_token" : "31amwtboj1i35z9",
+                    "easy_cron_id" : "493957",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T13:02:58.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36171,
+                    "createdAt" : "2018-01-22T13:03:00.000Z",
+                    "updatedAt" : "2018-01-22T13:03:01.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee13",
+                      "last_name" : "demo",
+                      "email" : "employee13@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_4krtj6y63m5fobz",
+                      "risk_action" : "default",
+                      "id" : 1395760,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:45:02.000Z",
+                      "updatedAt" : "2018-01-14T13:45:02.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product KKHB47IW65UL",
+                      "plan_code" : "PLN_mmt6z98r0vglxq8",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8226,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T12:28:02.000Z",
+                      "updatedAt" : "2018-01-22T12:28:02.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625849,
+                    "domain" : "test",
+                    "start" : 1516624143,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_lhi6bopt5xde19l",
+                    "email_token" : "2qlin7ligxdndna",
+                    "easy_cron_id" : "493949",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T12:28:58.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36166,
+                    "createdAt" : "2018-01-22T12:29:03.000Z",
+                    "updatedAt" : "2018-01-22T12:29:04.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee12",
+                      "last_name" : "emo",
+                      "email" : "employee12@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_5z5i6sw36jx2wlu",
+                      "risk_action" : "default",
+                      "id" : 1395757,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:56.000Z",
+                      "updatedAt" : "2018-01-14T13:44:56.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product KKHB47IW65UL",
+                      "plan_code" : "PLN_mmt6z98r0vglxq8",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8226,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T12:28:02.000Z",
+                      "updatedAt" : "2018-01-22T12:28:02.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625717,
+                    "domain" : "test",
+                    "start" : 1516624141,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_vsu30z98riqxx2x",
+                    "email_token" : "frtaegj04y756xm",
+                    "easy_cron_id" : "493948",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T12:28:58.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36165,
+                    "createdAt" : "2018-01-22T12:29:01.000Z",
+                    "updatedAt" : "2018-01-22T12:29:02.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee11",
+                      "last_name" : "demo",
+                      "email" : "employee11@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_fs968067v1doow0",
+                      "risk_action" : "default",
+                      "id" : 1395756,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:52.000Z",
+                      "updatedAt" : "2018-01-14T13:44:52.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Mpc product KKHB47IW65UL",
+                      "plan_code" : "PLN_mmt6z98r0vglxq8",
+                      "amount" : 9000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8226,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T12:28:02.000Z",
+                      "updatedAt" : "2018-01-22T12:28:02.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3620114,
+                    "domain" : "test",
+                    "start" : 1516624140,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 9000000,
+                    "subscription_code" : "SUB_zp574lozv6llekc",
+                    "email_token" : "fku9iyq6575t8vi",
+                    "easy_cron_id" : "493947",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T12:28:58.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36164,
+                    "createdAt" : "2018-01-22T12:29:00.000Z",
+                    "updatedAt" : "2018-01-22T12:29:00.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee14",
+                      "last_name" : "demo",
+                      "email" : "employee14@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_7o5rpgyihn2ccui",
+                      "risk_action" : "default",
+                      "id" : 1395761,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:45:04.000Z",
+                      "updatedAt" : "2018-01-14T13:45:04.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Good product FAQ130X1GZKD",
+                      "plan_code" : "PLN_v425e4j6eyt55me",
+                      "amount" : 5000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8225,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T10:36:37.000Z",
+                      "updatedAt" : "2018-01-22T10:36:37.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3658609,
+                    "domain" : "test",
+                    "start" : 1516618242,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 5000000,
+                    "subscription_code" : "SUB_y517eofx0k3wuev",
+                    "email_token" : "tru7qxp8m3f3hp0",
+                    "easy_cron_id" : "493921",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T10:50:35.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36153,
+                    "createdAt" : "2018-01-22T10:50:42.000Z",
+                    "updatedAt" : "2018-01-22T10:50:43.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee13",
+                      "last_name" : "demo",
+                      "email" : "employee13@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_4krtj6y63m5fobz",
+                      "risk_action" : "default",
+                      "id" : 1395760,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:45:02.000Z",
+                      "updatedAt" : "2018-01-14T13:45:02.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Good product FAQ130X1GZKD",
+                      "plan_code" : "PLN_v425e4j6eyt55me",
+                      "amount" : 5000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8225,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T10:36:37.000Z",
+                      "updatedAt" : "2018-01-22T10:36:37.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625849,
+                    "domain" : "test",
+                    "start" : 1516618240,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 5000000,
+                    "subscription_code" : "SUB_pmmw1bssp5wupjc",
+                    "email_token" : "wnsl72jwcocmjgb",
+                    "easy_cron_id" : "493920",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T10:50:35.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36152,
+                    "createdAt" : "2018-01-22T10:50:40.000Z",
+                    "updatedAt" : "2018-01-22T10:50:41.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee12",
+                      "last_name" : "emo",
+                      "email" : "employee12@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_5z5i6sw36jx2wlu",
+                      "risk_action" : "default",
+                      "id" : 1395757,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:56.000Z",
+                      "updatedAt" : "2018-01-14T13:44:56.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Good product FAQ130X1GZKD",
+                      "plan_code" : "PLN_v425e4j6eyt55me",
+                      "amount" : 5000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8225,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T10:36:37.000Z",
+                      "updatedAt" : "2018-01-22T10:36:37.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625717,
+                    "domain" : "test",
+                    "start" : 1516618239,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 5000000,
+                    "subscription_code" : "SUB_g5nnr91a93881ki",
+                    "email_token" : "hmx3etjyf3l67ws",
+                    "easy_cron_id" : "493919",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T10:50:35.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36151,
+                    "createdAt" : "2018-01-22T10:50:39.000Z",
+                    "updatedAt" : "2018-01-22T10:50:40.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee11",
+                      "last_name" : "demo",
+                      "email" : "employee11@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_fs968067v1doow0",
+                      "risk_action" : "default",
+                      "id" : 1395756,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:52.000Z",
+                      "updatedAt" : "2018-01-14T13:44:52.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Good product FAQ130X1GZKD",
+                      "plan_code" : "PLN_v425e4j6eyt55me",
+                      "amount" : 5000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8225,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-22T10:36:37.000Z",
+                      "updatedAt" : "2018-01-22T10:36:37.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3620114,
+                    "domain" : "test",
+                    "start" : 1516618238,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 5000000,
+                    "subscription_code" : "SUB_kcfhkosqhn13h8a",
+                    "email_token" : "k6bvxdrlx4xqlg3",
+                    "easy_cron_id" : "493918",
+                    "cron_expression" : "0 0 21 * *",
+                    "next_payment_date" : "2018-02-21T10:50:35.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36150,
+                    "createdAt" : "2018-01-22T10:50:38.000Z",
+                    "updatedAt" : "2018-01-22T10:50:38.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee14",
+                      "last_name" : "demo",
+                      "email" : "employee14@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_7o5rpgyihn2ccui",
+                      "risk_action" : "default",
+                      "id" : 1395761,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:45:04.000Z",
+                      "updatedAt" : "2018-01-14T13:45:04.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Good product R1RR2R3R4R5",
+                      "plan_code" : "PLN_mm752s00e60hhk7",
+                      "description" : "",
+                      "amount" : 5000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8173,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-18T12:10:28.000Z",
+                      "updatedAt" : "2018-01-18T12:10:28.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3658609,
+                    "domain" : "test",
+                    "start" : 1516429694,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 5000000,
+                    "subscription_code" : "SUB_4rayx6mta5yqmym",
+                    "email_token" : "bdd6synhcdkjb0y",
+                    "easy_cron_id" : "493148",
+                    "cron_expression" : "0 0 19 * *",
+                    "next_payment_date" : "2018-02-19T06:28:08.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36002,
+                    "createdAt" : "2018-01-20T06:28:14.000Z",
+                    "updatedAt" : "2018-01-20T06:28:15.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee13",
+                      "last_name" : "demo",
+                      "email" : "employee13@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_4krtj6y63m5fobz",
+                      "risk_action" : "default",
+                      "id" : 1395760,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:45:02.000Z",
+                      "updatedAt" : "2018-01-14T13:45:02.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Good product R1RR2R3R4R5",
+                      "plan_code" : "PLN_mm752s00e60hhk7",
+                      "description" : "",
+                      "amount" : 5000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8173,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-18T12:10:28.000Z",
+                      "updatedAt" : "2018-01-18T12:10:28.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625849,
+                    "domain" : "test",
+                    "start" : 1516429693,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 5000000,
+                    "subscription_code" : "SUB_bkme8lju5xlvle4",
+                    "email_token" : "pkxx935gcly9t2u",
+                    "easy_cron_id" : "493147",
+                    "cron_expression" : "0 0 19 * *",
+                    "next_payment_date" : "2018-02-19T06:28:08.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36001,
+                    "createdAt" : "2018-01-20T06:28:13.000Z",
+                    "updatedAt" : "2018-01-20T06:28:14.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee11",
+                      "last_name" : "demo",
+                      "email" : "employee11@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_fs968067v1doow0",
+                      "risk_action" : "default",
+                      "id" : 1395756,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:52.000Z",
+                      "updatedAt" : "2018-01-14T13:44:52.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Good product R1RR2R3R4R5",
+                      "plan_code" : "PLN_mm752s00e60hhk7",
+                      "description" : "",
+                      "amount" : 5000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8173,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-18T12:10:28.000Z",
+                      "updatedAt" : "2018-01-18T12:10:28.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3620114,
+                    "domain" : "test",
+                    "start" : 1516429692,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 5000000,
+                    "subscription_code" : "SUB_5es1mw1kxm46gtd",
+                    "email_token" : "sbfm13oydbkm52f",
+                    "easy_cron_id" : "493145",
+                    "cron_expression" : "0 0 19 * *",
+                    "next_payment_date" : "2018-02-19T06:28:08.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 35999,
+                    "createdAt" : "2018-01-20T06:28:12.000Z",
+                    "updatedAt" : "2018-01-20T06:28:12.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee12",
+                      "last_name" : "emo",
+                      "email" : "employee12@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_5z5i6sw36jx2wlu",
+                      "risk_action" : "default",
+                      "id" : 1395757,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:56.000Z",
+                      "updatedAt" : "2018-01-14T13:44:56.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Good product R1RR2R3R4R5",
+                      "plan_code" : "PLN_mm752s00e60hhk7",
+                      "description" : "",
+                      "amount" : 5000000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8173,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-18T12:10:28.000Z",
+                      "updatedAt" : "2018-01-18T12:10:28.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625717,
+                    "domain" : "test",
+                    "start" : 1516429692,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 5000000,
+                    "subscription_code" : "SUB_7xxt5qcrra1hfqu",
+                    "email_token" : "tos1qk2qcm3m9xk",
+                    "easy_cron_id" : "493146",
+                    "cron_expression" : "0 0 19 * *",
+                    "next_payment_date" : "2018-02-19T06:28:08.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 36000,
+                    "createdAt" : "2018-01-20T06:28:12.000Z",
+                    "updatedAt" : "2018-01-20T06:28:13.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee12",
+                      "last_name" : "emo",
+                      "email" : "employee12@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_5z5i6sw36jx2wlu",
+                      "risk_action" : "default",
+                      "id" : 1395757,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:56.000Z",
+                      "updatedAt" : "2018-01-14T13:44:56.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Private Thrift MYF8H2O63",
+                      "plan_code" : "PLN_bxknjmadmsr87of",
+                      "amount" : 1200000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8197,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-20T06:18:44.000Z",
+                      "updatedAt" : "2018-01-20T06:18:44.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625717,
+                    "domain" : "test",
+                    "start" : 1516429175,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 1200000,
+                    "subscription_code" : "SUB_82t90s0th5uypnr",
+                    "email_token" : "tnvwf8cht0rk7jv",
+                    "easy_cron_id" : "493144",
+                    "cron_expression" : "0 0 19 * *",
+                    "next_payment_date" : "2018-02-19T06:18:42.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 35998,
+                    "createdAt" : "2018-01-20T06:19:35.000Z",
+                    "updatedAt" : "2018-01-20T06:19:36.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee11",
+                      "last_name" : "demo",
+                      "email" : "employee11@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_fs968067v1doow0",
+                      "risk_action" : "default",
+                      "id" : 1395756,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:52.000Z",
+                      "updatedAt" : "2018-01-14T13:44:52.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "Private Thrift MYF8H2O63",
+                      "plan_code" : "PLN_bxknjmadmsr87of",
+                      "amount" : 1200000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8197,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-20T06:18:44.000Z",
+                      "updatedAt" : "2018-01-20T06:18:44.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3620114,
+                    "domain" : "test",
+                    "start" : 1516429174,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 1200000,
+                    "subscription_code" : "SUB_3yzhgywmdjba0dz",
+                    "email_token" : "8olq6gbnnufqxre",
+                    "easy_cron_id" : "493143",
+                    "cron_expression" : "0 0 19 * *",
+                    "next_payment_date" : "2018-02-19T06:18:42.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 35997,
+                    "createdAt" : "2018-01-20T06:19:34.000Z",
+                    "updatedAt" : "2018-01-20T06:19:35.000Z"
+                  }, {
+                    "customer" : {
+                      "first_name" : "employee12",
+                      "last_name" : "emo",
+                      "email" : "employee12@demo.com",
+                      "domain" : "test",
+                      "customer_code" : "CUS_5z5i6sw36jx2wlu",
+                      "risk_action" : "default",
+                      "id" : 1395757,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-14T13:44:56.000Z",
+                      "updatedAt" : "2018-01-14T13:44:56.000Z"
+                    },
+                    "plan" : {
+                      "domain" : "test",
+                      "name" : "ZAQ Prosper RS8GUZ",
+                      "plan_code" : "PLN_n5u9lsl3ldtjpla",
+                      "amount" : 44200000,
+                      "interval" : "monthly",
+                      "invoice_limit" : 0,
+                      "send_invoices" : true,
+                      "send_sms" : true,
+                      "hosted_page" : false,
+                      "currency" : "NGN",
+                      "migrate" : false,
+                      "id" : 8131,
+                      "integration" : 132621,
+                      "createdAt" : "2018-01-15T10:21:32.000Z",
+                      "updatedAt" : "2018-01-15T10:21:32.000Z"
+                    },
+                    "integration" : 132621,
+                    "authorization" : 3625717,
+                    "domain" : "test",
+                    "start" : 1516428131,
+                    "status" : "active",
+                    "quantity" : 1,
+                    "amount" : 44200000,
+                    "subscription_code" : "SUB_tvpgx6ee7c0h5q2",
+                    "email_token" : "rat7afimr2r2bop",
+                    "easy_cron_id" : "493141",
+                    "cron_expression" : "0 0 19 * *",
+                    "next_payment_date" : "2018-02-19T06:01:29.000Z",
+                    "invoice_limit" : 0,
+                    "id" : 35996,
+                    "createdAt" : "2018-01-20T06:02:11.000Z",
+                    "updatedAt" : "2018-01-20T06:02:12.000Z"
+                  } ],
+                  "meta" : {
+                    "total" : 29,
+                    "skipped" : 0,
+                    "perPage" : 50,
+                    "page" : 1,
+                    "pageCount" : 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Subscriptions" ],
+        "summary" : "Create Subscription",
+        "description" : "**Body Params**\n- **customer** (_required_) - Customer's email address or customer code\n- **plan** (_required_) - Plan code\n- **authorization** - If customer has multiple authorizations, you can set the desired authorization you wish to use for this subscription here. If this is not supplied, the customer's most recent authorization would be used\n- **start_date** - Set the date for the first debit. (ISO 8601 format)\n\nNote the `email_token` attribute for the subscription object. We create one on each subscription so customers can cancel their subscriptions from within the invoices sent to their mailboxes. Since they are not authorized, the email tokens are what we use to authenticate the requests over the API.",
+        "operationId" : "CreateSubscription",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **customer** (_required_) - Customer's email address or customer code\n- **plan** (_required_) - Plan code\n- **authorization** - If customer has multiple authorizations, you can set the desired authorization you wish to use for this subscription here. If this is not supplied, the customer's most recent authorization would be used\n- **start_date** - Set the date for the first debit. (ISO 8601 format)\n\nNote the `email_token` attribute for the subscription object. We create one on each subscription so customers can cancel their subscriptions from within the invoices sent to their mailboxes. Since they are not authorized, the email tokens are what we use to authenticate the requests over the API.",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_10"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/subscription/{id_or_subscription_code}" : {
+      "get" : {
+        "tags" : [ "Subscriptions" ],
+        "summary" : "Fetch Subscription",
+        "operationId" : "FetchSubscription",
+        "parameters" : [ {
+          "name" : "id_or_subscription_code",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/subscription/disable" : {
+      "post" : {
+        "tags" : [ "Subscriptions" ],
+        "summary" : "Disable Subscription",
+        "description" : "**Body Params**\n- **code** (_required_) - Subscription code\n- **token** (_required_) - Email token",
+        "operationId" : "DisableSubscription",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **code** (_required_) - Subscription code\n- **token** (_required_) - Email token",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_11"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/subscription/enable" : {
+      "post" : {
+        "tags" : [ "Subscriptions" ],
+        "summary" : "Enable Subscription",
+        "description" : "**Body Params**\n- **code** (_required_) - Subscription code\n- **token** (_required_) - Email token",
+        "operationId" : "EnableSubscription",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **code** (_required_) - Subscription code\n- **token** (_required_) - Email token",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_12"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/page" : {
+      "get" : {
+        "tags" : [ "Payment Pages" ],
+        "summary" : "List Pages",
+        "description" : "**Query Params**\n- **perPage** - Specify how many records you want to retrieve per page\n- **page** - Specify exactly what page you want to retrieve\n- **interval** - Filter list by plans with specified interval\n- **amount** - Filter list by plans with specified amount (in kobo)",
+        "operationId" : "ListPages",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      },
+      "post" : {
+        "tags" : [ "Payment Pages" ],
+        "summary" : "Create Page",
+        "description" : "**Body Params**\n- **name** (_required_) - Name of page\n- **description** - Short description of page\n- **amount** - Default amount you want to accept using this page. If none is set, customer is free to provide any amount of their choice. The latter scenario is useful for accepting donations\n- **slug** - URL slug you would like to be associated with this page. Page will be accessible at https://paystack.com/pay/[slug]\n- **redirect_url** - If you would like Paystack to redirect someplace upon successful payment, specify the URL here.\n- **send_invoices** - Set to false if you don't want invoices to be sent to your customers\n- **custom_fields** - If you would like to accept custom fields, specify them here. See sample code for details.\n\nSend pages created to your customers by giving out a link in this format https://paystack.com/pay/:slug. For instance, a valid link for the page above would be https://paystack.com/pay/5nApBwZkvY",
+        "operationId" : "CreatePage",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **name** (_required_) - Name of page\n- **description** - Short description of page\n- **amount** - Default amount you want to accept using this page. If none is set, customer is free to provide any amount of their choice. The latter scenario is useful for accepting donations\n- **slug** - URL slug you would like to be associated with this page. Page will be accessible at https://paystack.com/pay/[slug]\n- **redirect_url** - If you would like Paystack to redirect someplace upon successful payment, specify the URL here.\n- **send_invoices** - Set to false if you don't want invoices to be sent to your customers\n- **custom_fields** - If you would like to accept custom fields, specify them here. See sample code for details.\n\nSend pages created to your customers by giving out a link in this format https://paystack.com/pay/:slug. For instance, a valid link for the page above would be https://paystack.com/pay/5nApBwZkvY",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_13"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/page/id_or_plan_code" : {
+      "get" : {
+        "tags" : [ "Payment Pages" ],
+        "summary" : "Fetch Page",
+        "operationId" : "FetchPage",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/page/{id_or_plan_code}" : {
+      "put" : {
+        "tags" : [ "Payment Pages" ],
+        "summary" : "Update Page",
+        "description" : "**Body Params**\n- **name** - Name of page\n- **description** - Short description of page\n- **amount** - Amount to be charged in kobo. Will override the amount for existing subscriptions.\n- **active** - Set to false to deactivate page url.",
+        "operationId" : "UpdatePage",
+        "parameters" : [ {
+          "name" : "id_or_plan_code",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **name** - Name of page\n- **description** - Short description of page\n- **amount** - Amount to be charged in kobo. Will override the amount for existing subscriptions.\n- **active** - Set to false to deactivate page url.",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_14"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/page/check_slug_availability/slug" : {
+      "get" : {
+        "tags" : [ "Payment Pages" ],
+        "summary" : "Check Slug Availability",
+        "description" : "**Path Params**\n- **slug** (_required_) - URL slug to be confirmed",
+        "operationId" : "CheckSlugAvailability",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/paymentrequest" : {
+      "get" : {
+        "tags" : [ "Invoices" ],
+        "summary" : "List Invoices",
+        "description" : "**Query Params**\n- **customer** - Specify an ID for the customer whose requests you want to retrieve\n- **status** - Filter requests by status ('failed', 'success', 'abandoned')\n- **currency** - Filter requests sent in a particular currency.\n- **paid** - Filter requests that have been paid for \n- **include_archive** - Includes archived requests in the response\n- **payment_request** - Filter specific invoice by passing invoice code",
+        "operationId" : "ListInvoices",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      },
+      "post" : {
+        "tags" : [ "Invoices" ],
+        "summary" : "Create Invoice",
+        "description" : "**Body Params**\n- **customer** (_required_) - Customer ID or code\n- **due_date** (_required_) - ISO 8601 representation of request due date\n- **amount** (_required_) - Invoice amount. Only useful if line items and tax values are ignored. endpoint will throw a friendly warning if neither is available.\n- **description**\n- **line_items** - Array of line items in the format `[{\"name\":\"item 1\", \"amount\":2000}]`\n- **tax** - Array of taxes to be charged in the format `[{\"name\":\"VAT\", \"amount\":2000}]`\n- **currency** - Defaults to Naira\n- **send_notification** - Indicates whether Paystack sends an email notification to customer. Defaults to `true`.\n- **draft** - Indicate if request should be saved as draft. Defaults to `false` and overrides send_notification.\n- **send_notification** - Indicates whether Paystack sends an email notification to customer. Defaults to `true`.\n- **has_invoice** - Set to `true` to create a draft invoice (adds an auto incrementing invoice number if none is provided) even if there are no `line_items` or `tax` passed.\n- **invoice_number** - Numeric value of invoice. Invoice will start from 1 and auto increment from there. This field is to help override whatever value Paystack decides. Auto increment for subsequent invoices continue from this point.",
+        "operationId" : "CreateInvoice",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **customer** (_required_) - Customer ID or code\n- **due_date** (_required_) - ISO 8601 representation of request due date\n- **amount** (_required_) - Invoice amount. Only useful if line items and tax values are ignored. endpoint will throw a friendly warning if neither is available.\n- **description**\n- **line_items** - Array of line items in the format `[{\"name\":\"item 1\", \"amount\":2000}]`\n- **tax** - Array of taxes to be charged in the format `[{\"name\":\"VAT\", \"amount\":2000}]`\n- **currency** - Defaults to Naira\n- **send_notification** - Indicates whether Paystack sends an email notification to customer. Defaults to `true`.\n- **draft** - Indicate if request should be saved as draft. Defaults to `false` and overrides send_notification.\n- **send_notification** - Indicates whether Paystack sends an email notification to customer. Defaults to `true`.\n- **has_invoice** - Set to `true` to create a draft invoice (adds an auto incrementing invoice number if none is provided) even if there are no `line_items` or `tax` passed.\n- **invoice_number** - Numeric value of invoice. Invoice will start from 1 and auto increment from there. This field is to help override whatever value Paystack decides. Auto increment for subsequent invoices continue from this point.",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "string",
+                "example" : "{\"description\":\"a test invoice\",\"line_items\":[{\"name\":\"item 1\",\"amount\":20000},{\"name\":\"item 2\",\"amount\":20000}],\"tax\":[{\"name\":\"VAT\",\"amount\":2000}],\"customer\":\"CUS_je02lbimlqixzax\",\"due_date\":\"2017-05-08\"}"
+              },
+              "example" : "{\n\t\"description\": \"a test invoice\",\n\t\"line_items\": [\n\t\t{\"name\": \"item 1\", \"amount\": 20000},\n\t\t{\"name\": \"item 2\", \"amount\": 20000}\n\t],\n\t\"tax\": [\n\t\t{\"name\": \"VAT\", \"amount\": 2000}\n\t],\n\t\"customer\": \"CUS_je02lbimlqixzax\",\n\t\"due_date\": \"2017-05-08\"\n}"
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful 200",
+            "content" : {
+              "application/json; charset=utf-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/200"
+                },
+                "example" : {
+                  "status" : true,
+                  "message" : "Payment request created",
+                  "data" : {
+                    "id" : 23902,
+                    "domain" : "test",
+                    "amount" : 42000,
+                    "currency" : "NGN",
+                    "due_date" : "2017-05-08T00:00:00.000Z",
+                    "has_invoice" : true,
+                    "invoice_number" : 6,
+                    "description" : "a test invoice",
+                    "line_items" : [ {
+                      "name" : "item 1",
+                      "amount" : 20000
+                    }, {
+                      "name" : "item 2",
+                      "amount" : 20000
+                    } ],
+                    "tax" : [ {
+                      "name" : "VAT",
+                      "amount" : 2000
+                    } ],
+                    "request_code" : "PRQ_3z3cfcsee63r16w",
+                    "status" : "pending",
+                    "paid" : false,
+                    "notifications" : [ ],
+                    "offline_reference" : "119333023902",
+                    "customer" : 2396797,
+                    "created_at" : "2018-06-21T09:08:43.745Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/paymentrequest/REQUEST_ID_OR_CODE" : {
+      "get" : {
+        "tags" : [ "Invoices" ],
+        "summary" : "View Invoice",
+        "description" : "**Path Params**\n- **id** _(required)_ - An ID for the Invoice",
+        "operationId" : "ViewInvoice",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/paymentrequest/verify/ID_OR_CODE" : {
+      "get" : {
+        "tags" : [ "Invoices" ],
+        "summary" : "Verify Invoice",
+        "description" : "**Path Params**\n- **ID** - The invoice code for the Payment Request to be verified\n\nNote that a key is added called `pending_amount` when you fetch an invoice. This is because when paying for an invoice, you can choose to pay part but not all.  Whenever a successful transaction is made, the key updates to reveal what’s left of the invoice to pay.",
+        "operationId" : "VerifyInvoice",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/paymentrequest/notify/ID_OR_CODE" : {
+      "post" : {
+        "tags" : [ "Invoices" ],
+        "summary" : "Send Notification",
+        "description" : "**Path Params**\n- **id** - Invoice code for which you want to send a notification for",
+        "operationId" : "SendNotification",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Path Params**\n- **id** - Invoice code for which you want to send a notification for",
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : { }
+              },
+              "example" : [ ]
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/paymentrequest/totals" : {
+      "get" : {
+        "tags" : [ "Invoices" ],
+        "summary" : "Invoice Total",
+        "operationId" : "InvoiceTotal",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/paymentrequest/finalize/ID_OR_CODE" : {
+      "post" : {
+        "tags" : [ "Invoices" ],
+        "summary" : "Finalize Invoice",
+        "description" : "Publishes invoice that is draft by sending customer the invoice via email\n\n**Body Params**\n- **send_notification** - Indicates whether Paystack sends an email notification to customer. Defaults to `true`",
+        "operationId" : "FinalizeInvoice",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "Publishes invoice that is draft by sending customer the invoice via email\n\n**Body Params**\n- **send_notification** - Indicates whether Paystack sends an email notification to customer. Defaults to `true`",
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : { }
+              },
+              "example" : [ ]
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/paymentrequest/ID_OR_CODE" : {
+      "put" : {
+        "tags" : [ "Invoices" ],
+        "summary" : "Update Invoice",
+        "description" : "**Body Params**\n- **description**\n- **amount**\n- **line_item**\n- **tax**\n- **due_date**\n- **metadata**\n- **send_notification**\n- **currency** - only works in draft mode\n- **customer** - only works in draft mode",
+        "operationId" : "UpdateInvoice",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **description**\n- **amount**\n- **line_item**\n- **tax**\n- **due_date**\n- **metadata**\n- **send_notification**\n- **currency** - only works in draft mode\n- **customer** - only works in draft mode",
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_15"
+              },
+              "example" : [ {
+                "key" : "amount",
+                "value" : "100000",
+                "type" : "text"
+              } ]
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/invoice/archive/{id_or_code}" : {
+      "post" : {
+        "tags" : [ "Invoices" ],
+        "summary" : "Archive Invoice",
+        "description" : "Used to archive an invoice. Invoice will no longer be fetched on list or returned on verify.",
+        "operationId" : "ArchiveInvoice",
+        "parameters" : [ {
+          "name" : "id_or_code",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "Used to archive an invoice. Invoice will no longer be fetched on list or returned on verify.",
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : { }
+              },
+              "example" : [ ]
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/settlement" : {
+      "get" : {
+        "tags" : [ "Settlements" ],
+        "summary" : "Fetch Settlements",
+        "description" : "Settlements made to your bank accounts and the bank accounts for your subaccounts\n\n**Query Params**\n- **from** - Lower bound of date range. Leave undefined to export settlement from day one.\n- **to** - Upper bound of date range. Leave undefined to export settlements till date.\n- **subaccount** - Provide a subaccount code to export only settlements for that subaccount. Set to `none` to export only transactions for the account.",
+        "operationId" : "FetchSettlements",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Fetch Settlements JSON Sample",
+            "content" : {
+              "application/json; charset=utf-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/200"
+                },
+                "example" : {
+                  "status" : true,
+                  "message" : "Settlements retrieved",
+                  "data" : [ {
+                    "integration" : 102711,
+                    "settlement_date" : "2017-10-13T00:00:00.000Z",
+                    "domain" : "live",
+                    "total_amount" : 393850,
+                    "status" : "success",
+                    "total_fees" : 16150,
+                    "total_fees_paystack" : 12050,
+                    "total_fees_gateway" : 4100,
+                    "total_processed" : 410000,
+                    "currency" : "NGN",
+                    "id" : 56419,
+                    "createdAt" : "2017-10-13T01:04:23.000Z",
+                    "updatedAt" : "2017-10-13T01:04:23.000Z"
+                  }, {
+                    "integration" : 102711,
+                    "settlement_date" : "2017-08-03T00:00:00.000Z",
+                    "domain" : "live",
+                    "total_amount" : 9850,
+                    "status" : "success",
+                    "total_fees" : 150,
+                    "total_fees_paystack" : 50,
+                    "total_fees_gateway" : 100,
+                    "total_processed" : 10000,
+                    "currency" : "NGN",
+                    "id" : 40570,
+                    "createdAt" : "2017-08-03T01:03:34.000Z",
+                    "updatedAt" : "2017-08-03T01:03:34.000Z"
+                  }, {
+                    "integration" : 102711,
+                    "settlement_date" : "2017-04-01T00:00:00.000Z",
+                    "domain" : "live",
+                    "total_amount" : 19700,
+                    "status" : "success",
+                    "total_fees" : 300,
+                    "total_fees_paystack" : 100,
+                    "total_fees_gateway" : 200,
+                    "total_processed" : 20000,
+                    "currency" : "NGN",
+                    "id" : 21929,
+                    "createdAt" : "2017-04-01T01:01:31.000Z",
+                    "updatedAt" : "2017-04-04T10:59:48.000Z"
+                  } ],
+                  "meta" : {
+                    "total" : 3,
+                    "skipped" : 0,
+                    "perPage" : 50,
+                    "page" : 1,
+                    "pageCount" : 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transferrecipient" : {
+      "get" : {
+        "tags" : [ "Transfers Recipients" ],
+        "summary" : "List Transfer Recipients",
+        "description" : "**Query Params**\n- **perPage** - Specify how many records you want to retrieve per page\n- **page** - Specify exactly what page you want to retrieve",
+        "operationId" : "ListTransferRecipients",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      },
+      "post" : {
+        "tags" : [ "Transfers Recipients" ],
+        "summary" : "Create Transfer Recipient",
+        "description" : "Creates a new recipient. An duplicate account number will lead to the retrieval of the existing record.\n\n**Body Params**\n- **type** (_required_) - Recipient Type (Only nuban at this time)\n- **name** (_required_) - A name for the recipient\n- **metadata** - Store additional information about your recipient in a structured format. JSON\n- **bank_code** (_required_) - Required if type is nuban. You can find a list of bank codes at [api.paystack.co/bank](https://api.paystack.co/bank)\n- **account_number** (_required_) - Required if type is `nuban`\n- **currency** - Currency for the account receiving the transfer.\n- **description**",
+        "operationId" : "CreateTransferRecipient",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "Creates a new recipient. An duplicate account number will lead to the retrieval of the existing record.\n\n**Body Params**\n- **type** (_required_) - Recipient Type (Only nuban at this time)\n- **name** (_required_) - A name for the recipient\n- **metadata** - Store additional information about your recipient in a structured format. JSON\n- **bank_code** (_required_) - Required if type is nuban. You can find a list of bank codes at [api.paystack.co/bank](https://api.paystack.co/bank)\n- **account_number** (_required_) - Required if type is `nuban`\n- **currency** - Currency for the account receiving the transfer.\n- **description**",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_16"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "//transferrecipient/{recipient_code_or_id}" : {
+      "put" : {
+        "tags" : [ "Transfers Recipients" ],
+        "summary" : "Update Transfer Receipient",
+        "operationId" : "UpdateTransferReceipient",
+        "parameters" : [ {
+          "name" : "recipient_code_or_id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "recipient_code_or_id"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_17"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Transfers Recipients" ],
+        "summary" : "Delete Transfer Receipient",
+        "operationId" : "DeleteTransferReceipient",
+        "parameters" : [ {
+          "name" : "recipient_code_or_id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "recipient_code_or_id"
+          }
+        } ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transfer" : {
+      "get" : {
+        "tags" : [ "Transfers" ],
+        "summary" : "List Transfers",
+        "description" : "**Query Params**\n- **perPage** - Specify how many records you want to retrieve per page\n- **page** - Specify exactly what page you want to retrieve",
+        "operationId" : "ListTransfers",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      },
+      "post" : {
+        "tags" : [ "Transfers" ],
+        "summary" : "Initiate Transfer",
+        "description" : "Status of transfer object returned will be ‘pending’ if OTP is disabled. In the event that an OTP is required, status will read ‘otp’.\n\n**Body Params**\n- **source** (_required_) - Where should we transfer from? Only balance for now\n- **amount** - Amount to transfer in kobo\n- **currency** - NGN\n- **reason**\n- **recipient** (_required_) - Code for transfer recipient\n- **reference** - If specified, the field should be a unique identifier (in lowercase) for the object. Only `-` `,` `_` and alphanumeric characters allowed.",
+        "operationId" : "InitiateTransfer",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "Status of transfer object returned will be ‘pending’ if OTP is disabled. In the event that an OTP is required, status will read ‘otp’.\n\n**Body Params**\n- **source** (_required_) - Where should we transfer from? Only balance for now\n- **amount** - Amount to transfer in kobo\n- **currency** - NGN\n- **reason**\n- **recipient** (_required_) - Code for transfer recipient\n- **reference** - If specified, the field should be a unique identifier (in lowercase) for the object. Only `-` `,` `_` and alphanumeric characters allowed.",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_18"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transfer/verify/REFRENCE" : {
+      "get" : {
+        "tags" : [ "Transfers" ],
+        "summary" : "Verify Transfer",
+        "description" : "**Query Params**\n- **perPage** - Specify how many records you want to retrieve per page\n- **page** - Specify exactly what page you want to retrieve",
+        "operationId" : "VerifyTransfer",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "200 OK",
+            "content" : {
+              "application/json; charset=utf-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/200"
+                },
+                "example" : {
+                  "status" : true,
+                  "message" : "Transfer retrieved",
+                  "data" : {
+                    "integration" : 119333,
+                    "recipient" : {
+                      "domain" : "test",
+                      "type" : "nuban",
+                      "currency" : "NGN",
+                      "name" : "Zombie",
+                      "details" : {
+                        "account_number" : "0100000001",
+                        "bank_code" : "044",
+                        "bank_name" : "Access Bank"
+                      },
+                      "description" : "Zombier",
+                      "metadata" : "",
+                      "recipient_code" : "RCP_c2mty1w1uvd4av4",
+                      "active" : true,
+                      "id" : 31911,
+                      "integration" : 119333,
+                      "createdAt" : "2017-10-13T20:35:51.000Z",
+                      "updatedAt" : "2017-10-13T20:35:51.000Z"
+                    },
+                    "domain" : "test",
+                    "amount" : 50000,
+                    "currency" : "NGN",
+                    "reference" : "ref_demo",
+                    "source" : "balance",
+                    "reason" : "Test for reference",
+                    "status" : "success",
+                    "transfer_code" : "TRF_kjati32r73poyt5",
+                    "id" : 476948,
+                    "createdAt" : "2018-07-22T10:29:33.000Z",
+                    "updatedAt" : "2018-07-22T10:29:33.000Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transfer/id" : {
+      "get" : {
+        "tags" : [ "Transfers" ],
+        "summary" : "Fetch Transfer",
+        "description" : "**Path Params**\n- **id_or_code** (_required_) - An ID or code for the transfer whose details you want to retrieve.",
+        "operationId" : "FetchTransfer",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transfer/finalize_transfer" : {
+      "post" : {
+        "tags" : [ "Transfers" ],
+        "summary" : "Finalize Transfer",
+        "description" : "**Body Params**\n- **transfer_code** (_required_) - Transfer code\n- **otp** (_required_) - OTP sent to business phone to verify transfer.",
+        "operationId" : "FinalizeTransfer",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **transfer_code** (_required_) - Transfer code\n- **otp** (_required_) - OTP sent to business phone to verify transfer.",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_19"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transfer/bulk" : {
+      "post" : {
+        "tags" : [ "Transfers" ],
+        "summary" : "Initiate Bulk Transfer",
+        "description" : "You need to disable the Transfers OTP requirement to use this endpoint.\n\n**Body Params**\n- **(no name)**\n\nStatus of transfer object returned will be ‘pending’ if OTP is disabled. In the event that an OTP is required, status will read ‘otp’.",
+        "operationId" : "InitiateBulkTransfer",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "You need to disable the Transfers OTP requirement to use this endpoint.\n\n**Body Params**\n- **(no name)**\n\nStatus of transfer object returned will be ‘pending’ if OTP is disabled. In the event that an OTP is required, status will read ‘otp’.",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "string",
+                "example" : "{\"currency\":\"NGN\",\"source\":\"balance\",\"transfers\":[{\"amount\":50000,\"recipient\":\"RCP_db342dvqvz9qcrn\"},{\"amount\":50000,\"recipient\":\"RCP_db342dvqvz9qcrn\"}]}"
+              },
+              "example" : "{\n\t\"currency\": \"NGN\",\n\t\"source\": \"balance\",\n\t\"transfers\": [\n\t\t{\n\t\t\"amount\": 50000,\n\t\t\"recipient\": \"RCP_db342dvqvz9qcrn\"\n\t\t},\n\t\t{\n\t\t\"amount\": 50000,\n\t\t\"recipient\": \"RCP_db342dvqvz9qcrn\"\n\t\t}\n\t]\n}"
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/balance" : {
+      "get" : {
+        "tags" : [ "Transfers Control" ],
+        "summary" : "Check Balance",
+        "description" : "You can only transfer from what you have",
+        "operationId" : "CheckBalance",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/balance/ledger" : {
+      "get" : {
+        "tags" : [ "Transfers Control" ],
+        "summary" : "Balance Ledger",
+        "description" : "Returns all activity carried out from and to the Paystack Balance",
+        "operationId" : "BalanceLedger",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transfer/resend_otp" : {
+      "post" : {
+        "tags" : [ "Transfers Control" ],
+        "summary" : "Resend OTP for Transfer",
+        "description" : "Creates a new recipient. An duplicate account number will lead to the retrieval of the existing record.\n\n**Body Params**\n- **transfer_code** (_required_) - Transfer code\n- **reason** (_required_) - either `resend_otp` or `transfer`",
+        "operationId" : "ResendOTPforTransfer",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "Creates a new recipient. An duplicate account number will lead to the retrieval of the existing record.\n\n**Body Params**\n- **transfer_code** (_required_) - Transfer code\n- **reason** (_required_) - either `resend_otp` or `transfer`",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_20"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transfer/disable_otp" : {
+      "post" : {
+        "tags" : [ "Transfers Control" ],
+        "summary" : "Disable OTP requirement for Transfers",
+        "description" : "In the event that you want to be able to complete transfers programmatically without use of OTPs, this endpoint helps disable that….with an OTP. No arguments required. You will get an OTP.\n\nIn the event that you want to be able to complete transfers programmatically without use of OTPs, this endpoint helps disable that….with an OTP. No arguments required. An OTP is sent to you on your business phone.",
+        "operationId" : "DisableOTPrequirementforTransfers",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "In the event that you want to be able to complete transfers programmatically without use of OTPs, this endpoint helps disable that….with an OTP. No arguments required. You will get an OTP.\n\nIn the event that you want to be able to complete transfers programmatically without use of OTPs, this endpoint helps disable that….with an OTP. No arguments required. An OTP is sent to you on your business phone.",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : { }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transfer/disable_otp_finalize" : {
+      "post" : {
+        "tags" : [ "Transfers Control" ],
+        "summary" : "Finalize Disabling of OTP requirement for Transfers",
+        "description" : "**Body Params**\n- **otp** (_required_) - OTP sent to business phone to verify disabling OTP requirement\n\n",
+        "operationId" : "FinalizeDisablingofOTPrequirementforTransfers",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **otp** (_required_) - OTP sent to business phone to verify disabling OTP requirement\n\n",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_21"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transfer/enable_otp" : {
+      "post" : {
+        "tags" : [ "Transfers Control" ],
+        "summary" : "Enable OTP requirement for Transfers",
+        "description" : "In the event that a customer wants to stop being able to complete transfers programmatically, this endpoint helps turn OTP requirement back on. No arguments required.",
+        "operationId" : "EnableOTPrequirementforTransfers",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "In the event that a customer wants to stop being able to complete transfers programmatically, this endpoint helps turn OTP requirement back on. No arguments required.",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : { }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/charge" : {
+      "post" : {
+        "tags" : [ "Charge" ],
+        "summary" : "Charge",
+        "description" : "Send card details or bank details or authorization code to start a charge.\nSimple guide to charging cards directly https://developers.paystack.co/docs/charging-from-your-backend\n\n**Body Params**\n- **email** (_required_) - Customer's email address\n- **amount** (_required_) - Amount in kobo\n- **card** (_required_) - Card number\n- **card.number** (_required_) - Card to tokenize\n- **card.cvv** (_required_) - Card security code\n- **card.expiry_month** (_required_) - Expiry month of card\n- **card.expiry_year** (_required_) - Expiry year of card\n- **bank** - Bank account to charge (don't send if charging an authorization code or card)\n- **bank.code** (_required_) - A code for the [bank](https://developers.paystack.co/v1.0/ref/banks) (check banks for the banks supported). Only the ones for which paywithbank is true will work.\n- **bank.account_number** (_required_) - 10 digit nuban for the account to charge\n- **authorization_code** - An authorization code to charge (don't send if charging a card or bank account)\n- **pin** - 4-digit PIN (send with a non-reusable authorization code)\n- **metadata** - A JSON object",
+        "operationId" : "Charge",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "Send card details or bank details or authorization code to start a charge.\nSimple guide to charging cards directly https://developers.paystack.co/docs/charging-from-your-backend\n\n**Body Params**\n- **email** (_required_) - Customer's email address\n- **amount** (_required_) - Amount in kobo\n- **card** (_required_) - Card number\n- **card.number** (_required_) - Card to tokenize\n- **card.cvv** (_required_) - Card security code\n- **card.expiry_month** (_required_) - Expiry month of card\n- **card.expiry_year** (_required_) - Expiry year of card\n- **bank** - Bank account to charge (don't send if charging an authorization code or card)\n- **bank.code** (_required_) - A code for the [bank](https://developers.paystack.co/v1.0/ref/banks) (check banks for the banks supported). Only the ones for which paywithbank is true will work.\n- **bank.account_number** (_required_) - 10 digit nuban for the account to charge\n- **authorization_code** - An authorization code to charge (don't send if charging a card or bank account)\n- **pin** - 4-digit PIN (send with a non-reusable authorization code)\n- **metadata** - A JSON object",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "string",
+                "example" : "{\"email\":\"some@body.nice\",\"amount\":\"10000\",\"metadata\":{\"custom_fields\":[{\"value\":\"makurdi\",\"display_name\":\"Donation for\",\"variable_name\":\"donation_for\"}]},\"card\":{\"cvv\":\"408\",\"number\":\"4084084084084081\",\"expiry_month\":\"01\",\"expiry_year\":\"99\"},\"pin\":\"0000\"}"
+              },
+              "example" : "{\n  \"email\":\"some@body.nice\",\n  \"amount\":\"10000\",\n  \"metadata\":{\n    \"custom_fields\":[\n      {\n        \"value\":\"makurdi\",\n        \"display_name\": \"Donation for\",\n        \"variable_name\": \"donation_for\"\n      }\n    ]\n  },\n  \"card\":{\n    \"cvv\":\"408\",\n    \"number\":\"4084084084084081\",\n    \"expiry_month\":\"01\",\n    \"expiry_year\":\"99\"\n  },\n  \"pin\":\"0000\"\n}"
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/charge/submit_pin" : {
+      "post" : {
+        "tags" : [ "Charge" ],
+        "summary" : "Submit PIN",
+        "description" : "**Body Params**\n- **pin** (_required_) - PIN submitted by user\n- **reference** (_required_) - reference for transaction that requested pin",
+        "operationId" : "SubmitPIN",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Body Params**\n- **pin** (_required_) - PIN submitted by user\n- **reference** (_required_) - reference for transaction that requested pin",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_22"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/charge/submit_otp" : {
+      "post" : {
+        "tags" : [ "Charge" ],
+        "summary" : "Submit OTP",
+        "description" : "Submit OTP to complete a charge\n\n**Body Params**\n- **otp** (_required_) - OTP submitted by user\n- **reference** (_required_) - reference for ongoing transaction",
+        "operationId" : "SubmitOTP",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "Submit OTP to complete a charge\n\n**Body Params**\n- **otp** (_required_) - OTP submitted by user\n- **reference** (_required_) - reference for ongoing transaction",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_23"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/charge/submit_phone" : {
+      "post" : {
+        "tags" : [ "Charge" ],
+        "summary" : "Submit Phone",
+        "description" : "Submit Phone when requested\n\n**Body Params**\n- **phone** (_required_) - Phone number submitted by user\n- **reference** (_required_) - reference for ongoing transaction",
+        "operationId" : "SubmitPhone",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "Submit Phone when requested\n\n**Body Params**\n- **phone** (_required_) - Phone number submitted by user\n- **reference** (_required_) - reference for ongoing transaction",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_24"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/charge/submit_birthday" : {
+      "post" : {
+        "tags" : [ "Charge" ],
+        "summary" : "Submit Birthday",
+        "description" : "Submit Birthday when requested\n\n**Body Params**\n- **birthday** (_required_) - Birthday number submitted by user\n- **reference** (_required_) - reference for ongoing transaction",
+        "operationId" : "SubmitBirthday",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "Submit Birthday when requested\n\n**Body Params**\n- **birthday** (_required_) - Birthday number submitted by user\n- **reference** (_required_) - reference for ongoing transaction",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : { }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/charge/reference" : {
+      "get" : {
+        "tags" : [ "Charge" ],
+        "summary" : "Check pending charge",
+        "description" : "When you get \"pending\" as a charge status, wait 30 seconds or more, then make a check to see if its status has changed. Don't call too early as you may get a lot more pending than you should.\n\n**Body Params**\n- **reference** (_required_) - The reference to check",
+        "operationId" : "Checkpendingcharge",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/bulkcharge" : {
+      "post" : {
+        "tags" : [ "Bulk Charges" ],
+        "summary" : "Initiate Bulk Charge",
+        "description" : "Send an array of objects with authorization codes and amount in kobo so we can process transactions as a batch.\n\n**Body Params**\n- **(no_name)**",
+        "operationId" : "InitiateBulkCharge",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "Send an array of objects with authorization codes and amount in kobo so we can process transactions as a batch.\n\n**Body Params**\n- **(no_name)**",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "string",
+                "example" : "[{\"authorization\":\"AUTH_n95vpedf\",\"amount\":2500},{\"authorization\":\"AUTH_ljdt4e4j\",\"amount\":1500}]"
+              },
+              "example" : "[{\n\t\"authorization\": \"AUTH_n95vpedf\", \n\t\"amount\": 2500\n}, \n{\n\t\"authorization\": \"AUTH_ljdt4e4j\", \n\t\"amount\": 1500\n}]"
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/transfer/id_or_code" : {
+      "get" : {
+        "tags" : [ "Bulk Charges" ],
+        "summary" : "List Bulk Charge Batches",
+        "description" : "This lists all bulk charge batches created by the integration. Statuses can be `active`, `paused`, or `complete`.\n\n**Query Params**\n- **perPage** - Specify how many records you want to retrieve per page\n- **page** - Specify exactly what page you want to retrieve",
+        "operationId" : "ListBulkChargeBatches",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/bulkcharge/id_or_code" : {
+      "get" : {
+        "tags" : [ "Bulk Charges" ],
+        "summary" : "Fetch Bulk Charge Batch",
+        "description" : "This endpoint retrieves a specific batch code. It also returns useful information on its progress by way of the `total_charges` and `pending_charges` attributes.\n\n**Path Params**\n- **id_or_code** (_required_) - An ID or code for the transfer whose details you want to retrieve.",
+        "operationId" : "FetchBulkChargeBatch",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/bulkcharge/id_or_code/charges" : {
+      "get" : {
+        "tags" : [ "Bulk Charges" ],
+        "summary" : "Fetch Charges in a Batch",
+        "description" : "This endpoint retrieves the charges associated with a specified batch code. Pagination parameters are available. You can also filter by status. Charge statuses can be `pending`, `success` or `failed`.\n\n**Path Params**\n- **id_or_code** (_required_) - An ID or code for the batch whose charges you want to retrieve.\n\n**Query Params**\n- **status** - `pending`, `success` or `failed`\n- **perPage**\n- **page**\n",
+        "operationId" : "FetchChargesinaBatch",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/bulkcharge/pause/batch_code" : {
+      "get" : {
+        "tags" : [ "Bulk Charges" ],
+        "summary" : "Pause Bulk Charge Batch",
+        "description" : "Use this endpoint to pause processing a batch\n\n**Path Params**\n- **batch_code** (_required_)",
+        "operationId" : "PauseBulkChargeBatch",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/bulkcharge/resume/batch_code" : {
+      "get" : {
+        "tags" : [ "Bulk Charges" ],
+        "summary" : "Resume Bulk Charge Batch",
+        "description" : "Use this endpoint to pause processing a batch\n\n**Path Params**\n- **batch_code** (_required_)",
+        "operationId" : "ResumeBulkChargeBatch",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/refund" : {
+      "get" : {
+        "tags" : [ "Refunds" ],
+        "summary" : "List Refunds",
+        "description" : "**Query Parameters**\n\n- **transaction**\n- **currency**",
+        "operationId" : "ListRefunds",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { },
+          "401" : {
+            "description" : "List Refunds",
+            "content" : {
+              "application/json; charset=utf-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/401"
+                },
+                "example" : {
+                  "status" : true,
+                  "message" : "Refunds retrieved",
+                  "data" : [ {
+                    "id" : 1,
+                    "integration" : 100982,
+                    "domain" : "live",
+                    "transaction" : 1641,
+                    "dispute" : 20,
+                    "amount" : 500000,
+                    "deducted_amount" : 500000,
+                    "currency" : "NGN",
+                    "channel" : "migs",
+                    "fully_deducted" : 1,
+                    "refunded_by" : "customer@gmail.com",
+                    "refunded_at" : "2018-01-12T10:54:47.000Z",
+                    "expected_at" : "2017-10-01T21:10:59.000Z",
+                    "customer_note" : "xxx",
+                    "merchant_note" : "xxx",
+                    "created_at" : "2017-09-24T21:10:59.000Z",
+                    "updated_at" : "2018-01-18T11:59:56.000Z",
+                    "status" : "processed"
+                  }, {
+                    "id" : 2,
+                    "integration" : 100982,
+                    "domain" : "test",
+                    "transaction" : 323896,
+                    "dispute" : 45,
+                    "amount" : 500000,
+                    "currency" : "NGN",
+                    "channel" : "migs",
+                    "refunded_by" : "customer@gmail.com",
+                    "refunded_at" : "2017-09-24T21:11:53.000Z",
+                    "expected_at" : "2017-10-01T21:11:53.000Z",
+                    "customer_note" : "xxx",
+                    "merchant_note" : "xxx",
+                    "created_at" : "2017-09-24T21:11:53.000Z",
+                    "updated_at" : "2017-09-24T21:11:53.000Z",
+                    "status" : "pending"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Refunds" ],
+        "summary" : "Create Refund",
+        "description" : "This creates a refund which is then processed by the Paystack team\n\n**Body Params**\n- **transaction** _(required)_: Identifier for transaction to be refunded\n- **amount** _(optional)_: How much in kobo to be refunded to the customer. Amount is optional(defaults to original transaction amount) and cannot be more than the original transaction amount.\n- **currency**: Three-letter ISO currency\n- **customer_note** _(optional)_: customer reason\n- **merchant_note** _(optional)_: merchant reason",
+        "operationId" : "CreateRefund",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "This creates a refund which is then processed by the Paystack team\n\n**Body Params**\n- **transaction** _(required)_: Identifier for transaction to be refunded\n- **amount** _(optional)_: How much in kobo to be refunded to the customer. Amount is optional(defaults to original transaction amount) and cannot be more than the original transaction amount.\n- **currency**: Three-letter ISO currency\n- **customer_note** _(optional)_: customer reason\n- **merchant_note** _(optional)_: merchant reason",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_25"
+              },
+              "example" : [ {
+                "key" : "transaction",
+                "value" : "12794872",
+                "type" : "text"
+              }, {
+                "key" : "amount",
+                "value" : "50000",
+                "type" : "text"
+              }, {
+                "key" : "currency",
+                "value" : "NGN",
+                "type" : "text"
+              }, {
+                "key" : "merchant_note",
+                "value" : "yada yada",
+                "type" : "text"
+              }, {
+                "key" : "customer_note",
+                "value" : "blah blah",
+                "type" : "text"
+              } ]
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { },
+          "201" : {
+            "description" : "Create Refund",
+            "content" : {
+              "application/json; charset=utf-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/201"
+                },
+                "example" : {
+                  "status" : true,
+                  "message" : "Refund created successfully",
+                  "data" : {
+                    "dispute" : 5238,
+                    "transaction" : {
+                      "reference" : "1517474242_6122RNV2MR",
+                      "domain" : "test",
+                      "status" : "reversed",
+                      "original_amount" : 50750,
+                      "amount" : 50750,
+                      "gateway" : "",
+                      "quantity" : 1,
+                      "channel" : "card",
+                      "gateway_response" : "Successful",
+                      "authorization_code" : "AUTH_jryeoytyxx",
+                      "currency" : "NGN",
+                      "logged_for_settlement" : "ignored",
+                      "settled" : true,
+                      "metadata" : {
+                        "custom_fields" : [ {
+                          "display_name" : "Full Name",
+                          "variable_name" : "Full_Name",
+                          "type" : "text",
+                          "value" : "Stephen Amaza"
+                        }, {
+                          "display_name" : "Quantity",
+                          "variable_name" : "Quantity",
+                          "type" : "text",
+                          "value" : 1
+                        }, {
+                          "display_name" : "Phone Number",
+                          "variable_name" : "Phone_Number",
+                          "type" : "text",
+                          "value" : 9085662909
+                        }, {
+                          "display_name" : "Address",
+                          "variable_name" : "Address",
+                          "type" : "text",
+                          "value" : "3 Ladoke Akintola Rd, GRA"
+                        }, {
+                          "display_name" : "Datepicker Title",
+                          "variable_name" : "Datepicker_Title",
+                          "type" : "text",
+                          "value" : "02/23/2018"
+                        }, {
+                          "display_name" : "Unit Price",
+                          "variable_name" : "Unit_Price",
+                          "type" : "text",
+                          "value" : "NGN500"
+                        } ],
+                        "referrer" : "http://localhost:8888/page/"
+                      },
+                      "payment_page" : "0",
+                      "bin" : "408408",
+                      "ip_address" : "41.184.178.86",
+                      "paidAt" : "2018-02-01T08:38:08.000Z",
+                      "fees" : 761,
+                      "deviceid" : "648cbc1f3cd6f5cfc8e0fc621d33c06e",
+                      "label" : "0",
+                      "log" : {
+                        "time_spent" : 48,
+                        "attempts" : 1,
+                        "errors" : 0,
+                        "success" : true,
+                        "mobile" : false,
+                        "input" : [ ],
+                        "history" : [ {
+                          "type" : "input",
+                          "message" : "Filled these fields: card number, card expiry, card cvv",
+                          "time" : 45
+                        }, {
+                          "type" : "action",
+                          "message" : "Attempted to pay",
+                          "time" : 45
+                        }, {
+                          "type" : "success",
+                          "message" : "Successfully paid",
+                          "time" : 47
+                        }, {
+                          "type" : "close",
+                          "message" : "Page closed",
+                          "time" : 48
+                        } ]
+                      },
+                      "id" : 12794872,
+                      "integration" : 119333,
+                      "customer" : 834733,
+                      "coupon" : 0,
+                      "plan" : 0,
+                      "payment_request" : 0,
+                      "authorization" : 3878861,
+                      "createdAt" : "2018-02-01T08:37:24.000Z",
+                      "updatedAt" : "2018-02-13T13:57:56.000Z"
+                    },
+                    "currency" : "NGN",
+                    "amount" : 50000,
+                    "channel" : "",
+                    "customer_note" : "blah blah",
+                    "merchant_note" : "yada yada",
+                    "integration" : 119333,
+                    "domain" : "test",
+                    "status" : "pending",
+                    "refunded_by" : "steve@paystack.com",
+                    "refunded_at" : "2018-02-13T13:57:56.549Z",
+                    "expected_at" : "2018-02-20T13:57:56.000Z",
+                    "fully_deducted" : false,
+                    "id" : 763,
+                    "createdAt" : "2018-02-13T13:57:56.551Z",
+                    "updatedAt" : "2018-02-13T13:57:56.551Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refund/{id}" : {
+      "get" : {
+        "tags" : [ "Refunds" ],
+        "summary" : "Fetch Refund",
+        "description" : "**Path Params**\n- **id** - ID of the transaction to be refunded",
+        "operationId" : "FetchRefund",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "responses" : {
+          "200" : { },
+          "401" : {
+            "description" : "Fetch Refund",
+            "content" : {
+              "application/json; charset=utf-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/401"
+                },
+                "example" : {
+                  "status" : true,
+                  "message" : "Refund retrieved",
+                  "data" : {
+                    "integration" : 100982,
+                    "transaction" : 1641,
+                    "domain" : "live",
+                    "amount" : 500000,
+                    "deducted_amount" : 500000,
+                    "fully_deducted" : true,
+                    "currency" : "NGN",
+                    "channel" : "migs",
+                    "status" : "processed",
+                    "refunded_by" : "eseyinwale@gmail.com",
+                    "refunded_at" : "2018-01-12T10:54:47.000Z",
+                    "expected_at" : "2017-10-01T21:10:59.000Z",
+                    "customer_note" : "xxx",
+                    "merchant_note" : "xxx",
+                    "id" : 1,
+                    "createdAt" : "2017-09-24T21:10:59.000Z",
+                    "updatedAt" : "2018-01-18T11:59:56.000Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/integration/payment_session_timeout" : {
+      "get" : {
+        "tags" : [ "Control Panel" ],
+        "summary" : "Fetch Payment Session Timeout",
+        "operationId" : "FetchPaymentSessionTimeout",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      },
+      "put" : {
+        "tags" : [ "Control Panel" ],
+        "summary" : "Update Payment Session Timeout",
+        "description" : "**Query Params**\n- **timeout** - Time before stopping session (in seconds). Set to 0 to cancel session timeouts",
+        "operationId" : "UpdatePaymentSessionTimeout",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "**Query Params**\n- **timeout** - Time before stopping session (in seconds). Set to 0 to cancel session timeouts",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : { }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/bank/resolve_bvn/BVN" : {
+      "get" : {
+        "tags" : [ "Verification" ],
+        "summary" : "Resolve BVN",
+        "description" : "**Path Params**\n- **bvn** (_required_) - 11 digit BVN",
+        "operationId" : "ResolveBVN",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/bank/resolve" : {
+      "get" : {
+        "tags" : [ "Verification" ],
+        "summary" : "Resolve Account Number",
+        "description" : "**Path Params**\n- **account_number** - Account Number\n- **bank_code** - Bank Code",
+        "operationId" : "ResolveAccountNumber",
+        "parameters" : [ {
+          "name" : "account_number",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "example" : "ACCOUNT_NUMBER"
+          }
+        }, {
+          "name" : "bank_code",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "example" : "BANK_CODE"
+          }
+        } ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/decision/bin/BIN" : {
+      "get" : {
+        "tags" : [ "Verification" ],
+        "summary" : "Resolve Card BIN",
+        "description" : "**Path Params**\n- **bin** (_required_) - First 6 characters of card",
+        "operationId" : "ResolveCardBIN",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/verifications" : {
+      "post" : {
+        "tags" : [ "Verification" ],
+        "summary" : "Resolve Phone Number",
+        "description" : "Using the Truecaller API you can verify the authenticity of a customer. It returns the customer's name, phone number, email, social media handles and organization as available on their Truecaller profile.\n\n**Body Parameters**\n- **verification_type** _(required)_\n- **phone** _(required)_ - Customer phone number starting with country code (without the + prefix)\n- **callback_url** - Link on server to receive the truecaller details",
+        "operationId" : "ResolvePhoneNumber",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "Using the Truecaller API you can verify the authenticity of a customer. It returns the customer's name, phone number, email, social media handles and organization as available on their Truecaller profile.\n\n**Body Parameters**\n- **verification_type** _(required)_\n- **phone** _(required)_ - Customer phone number starting with country code (without the + prefix)\n- **callback_url** - Link on server to receive the truecaller details",
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_26"
+              },
+              "example" : [ {
+                "key" : "verification_type",
+                "value" : "truecaller",
+                "type" : "text"
+              }, {
+                "key" : "phone",
+                "value" : "2349012345678",
+                "type" : "text"
+              }, {
+                "key" : "callback_url",
+                "value" : "https://linktopage.com/truecaller",
+                "type" : "text"
+              } ]
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful",
+            "content" : {
+              "application/json; charset=utf-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/200"
+                },
+                "example" : {
+                  "status" : true,
+                  "message" : "Truecaller verification successful",
+                  "data" : {
+                    "requestId" : "zLXHzm_DqHcv09ghFQuLfBQ81Cs=",
+                    "state" : "truecaller_vef_c4d3e611fbff37a0cb73e02e4d081db31a47255f"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Invalid Request",
+            "content" : {
+              "application/json; charset=utf-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/401"
+                },
+                "example" : {
+                  "status" : false,
+                  "message" : "Invalid key"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "No truecaller app installed",
+            "content" : {
+              "application/json; charset=utf-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/403"
+                },
+                "example" : {
+                  "status" : false,
+                  "message" : "This number does not have the Truecaller app installed."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bvn/match" : {
+      "post" : {
+        "tags" : [ "Verification" ],
+        "summary" : "BVN Match",
+        "description" : "The BVN Match service allows you to validate that an account number, first name, last name and middle name of a user matches their BVN",
+        "operationId" : "BVNMatch",
+        "parameters" : [ ],
+        "requestBody" : {
+          "description" : "The BVN Match service allows you to validate that an account number, first name, last name and middle name of a user matches their BVN",
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_27"
+              },
+              "example" : [ {
+                "key" : "bvn",
+                "value" : "12345678912",
+                "type" : "text"
+              }, {
+                "key" : "account_number",
+                "value" : "0000000000",
+                "type" : "text"
+              }, {
+                "key" : "bank_code",
+                "value" : 87.0,
+                "type" : "text"
+              } ]
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : { }
+        }
+      }
+    },
+    "/bank" : {
+      "get" : {
+        "tags" : [ "Miscellaneous" ],
+        "summary" : "List Banks",
+        "operationId" : "ListBanks",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : { }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "200" : {
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "boolean",
+            "default" : true
+          },
+          "message" : {
+            "type" : "string",
+            "default" : "Authorization URL created"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/200_data"
+          }
+        }
+      },
+      "201" : {
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "boolean",
+            "default" : true
+          },
+          "message" : {
+            "type" : "string",
+            "default" : "Refund created successfully"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/201_data"
+          }
+        }
+      },
+      "401" : {
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "boolean",
+            "default" : true
+          },
+          "message" : {
+            "type" : "string",
+            "default" : "Refunds retrieved"
+          },
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/401_data"
+            }
+          }
+        }
+      },
+      "403" : {
+        "type" : "object",
+        "properties" : {
+          "status" : { },
+          "message" : {
+            "type" : "string",
+            "default" : "This number does not have the Truecaller app installed."
+          }
+        }
+      },
+      "body" : {
+        "required" : [ "amount", "authorization_code", "email" ],
+        "type" : "object",
+        "properties" : {
+          "authorization_code" : {
+            "type" : "string",
+            "example" : "AUTH_CODE"
+          },
+          "email" : {
+            "type" : "string",
+            "example" : "customer@email.com"
+          },
+          "amount" : {
+            "type" : "string",
+            "example" : "500000"
+          }
+        }
+      },
+      "body_1" : {
+        "required" : [ "amount", "authorization_code", "email" ],
+        "type" : "object",
+        "properties" : {
+          "authorization_code" : {
+            "type" : "string",
+            "example" : "AUTH_CODE"
+          },
+          "email" : {
+            "type" : "string",
+            "example" : "customer@email.com"
+          },
+          "amount" : {
+            "type" : "string",
+            "example" : "500000"
+          }
+        }
+      },
+      "body_2" : {
+        "required" : [ "authorization_code" ],
+        "type" : "object",
+        "properties" : {
+          "authorization_code" : {
+            "type" : "string",
+            "example" : "AUTH_CODE"
+          }
+        }
+      },
+      "body_3" : {
+        "required" : [ "email" ],
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string",
+            "example" : "customer@email.com"
+          }
+        }
+      },
+      "body_4" : {
+        "required" : [ "email" ],
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string",
+            "example" : "customer@email.com"
+          }
+        }
+      },
+      "body_5" : {
+        "required" : [ "customer", "risk_action" ],
+        "type" : "object",
+        "properties" : {
+          "customer" : {
+            "example" : "CUS_xr58yrr2ujlft9k"
+          },
+          "risk_action" : {
+            "example" : "allow"
+          }
+        }
+      },
+      "body_6" : {
+        "required" : [ "account_number", "business_name", "percentage_charge", "settlement_bank" ],
+        "type" : "object",
+        "properties" : {
+          "business_name" : {
+            "type" : "string",
+            "example" : "Sunshine Studios"
+          },
+          "settlement_bank" : {
+            "type" : "string",
+            "example" : "044"
+          },
+          "account_number" : {
+            "type" : "string",
+            "example" : "193274682"
+          },
+          "percentage_charge" : {
+            "type" : "string",
+            "example" : "18.2"
+          }
+        }
+      },
+      "body_7" : {
+        "required" : [ "percentage_charge", "primary_contact_email" ],
+        "type" : "object",
+        "properties" : {
+          "primary_contact_email" : {
+            "type" : "string",
+            "example" : "customer@newemail.com"
+          },
+          "percentage_charge" : {
+            "type" : "string",
+            "example" : "18.9"
+          }
+        }
+      },
+      "body_8" : {
+        "required" : [ "amount", "interval", "name" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : "Monthly retainer"
+          },
+          "interval" : {
+            "type" : "string",
+            "example" : "monthly"
+          },
+          "amount" : {
+            "type" : "string",
+            "example" : "500000"
+          }
+        }
+      },
+      "body_9" : {
+        "required" : [ "name" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : "Monthly retainer (renamed)"
+          }
+        }
+      },
+      "body_10" : {
+        "required" : [ "customer", "plan" ],
+        "type" : "object",
+        "properties" : {
+          "customer" : {
+            "type" : "string",
+            "example" : "CUS_xnxdt6s1zg1f4nx"
+          },
+          "plan" : {
+            "type" : "string",
+            "example" : "PLN_gx2wn530m0i3w3m"
+          }
+        }
+      },
+      "body_11" : {
+        "required" : [ "code", "token" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "example" : "SUB_vsyqdmlzble3uii"
+          },
+          "token" : {
+            "type" : "string",
+            "example" : "d7gofp6yppn3qz7"
+          }
+        }
+      },
+      "body_12" : {
+        "required" : [ "code", "token" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "example" : "SUB_vsyqdmlzble3uii"
+          },
+          "token" : {
+            "type" : "string",
+            "example" : "d7gofp6yppn3qz7"
+          }
+        }
+      },
+      "body_13" : {
+        "required" : [ "amount", "description", "name" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "description" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "amount" : {
+            "type" : "string",
+            "example" : "500000"
+          }
+        }
+      },
+      "body_14" : {
+        "required" : [ "description" ],
+        "type" : "object",
+        "properties" : {
+          "description" : {
+            "type" : "string",
+            "example" : "Give unto the Lord, and it shall be multiplied 10-fold to you."
+          }
+        }
+      },
+      "body_15" : {
+        "required" : [ "amount" ],
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "type" : "string",
+            "example" : "100000"
+          }
+        }
+      },
+      "body_16" : {
+        "required" : [ "account_number", "bank_code", "currency", "description", "name", "type" ],
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "example" : "nuban"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Zombie"
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "Zombier"
+          },
+          "account_number" : {
+            "type" : "string",
+            "example" : "01000000010"
+          },
+          "bank_code" : {
+            "type" : "string",
+            "example" : "044"
+          },
+          "currency" : {
+            "type" : "string",
+            "example" : "NGN"
+          }
+        }
+      },
+      "body_17" : {
+        "required" : [ "email", "name" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : "Zombie"
+          },
+          "email" : {
+            "type" : "string",
+            "example" : "customer@email.com"
+          }
+        }
+      },
+      "body_18" : {
+        "required" : [ "amount", "reason", "recipient", "source" ],
+        "type" : "object",
+        "properties" : {
+          "source" : {
+            "type" : "string",
+            "example" : "balance"
+          },
+          "reason" : {
+            "type" : "string",
+            "example" : "E go better for you"
+          },
+          "amount" : {
+            "type" : "string",
+            "example" : "3794800"
+          },
+          "recipient" : {
+            "type" : "string",
+            "example" : "RCP_gx2wn530m0i3w3m"
+          }
+        }
+      },
+      "body_19" : {
+        "required" : [ "otp", "transfer_code" ],
+        "type" : "object",
+        "properties" : {
+          "transfer_code" : {
+            "type" : "string",
+            "example" : "TRF_vsyqdmlzble3uii"
+          },
+          "otp" : {
+            "type" : "string",
+            "example" : "928783"
+          }
+        }
+      },
+      "body_20" : {
+        "required" : [ "transfer_code" ],
+        "type" : "object",
+        "properties" : {
+          "transfer_code" : {
+            "type" : "string",
+            "example" : "TRF_vsyqdmlzble3uii"
+          }
+        }
+      },
+      "body_21" : {
+        "required" : [ "otp" ],
+        "type" : "object",
+        "properties" : {
+          "otp" : {
+            "type" : "string",
+            "example" : "928783"
+          }
+        }
+      },
+      "body_22" : {
+        "required" : [ "pin", "reference" ],
+        "type" : "object",
+        "properties" : {
+          "pin" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "reference" : {
+            "type" : "string",
+            "example" : ""
+          }
+        }
+      },
+      "body_23" : {
+        "required" : [ "otp", "reference" ],
+        "type" : "object",
+        "properties" : {
+          "otp" : {
+            "type" : "string",
+            "example" : "123456"
+          },
+          "reference" : {
+            "type" : "string",
+            "example" : "5bwib5v6anhe9xa"
+          }
+        }
+      },
+      "body_24" : {
+        "required" : [ "phone", "reference" ],
+        "type" : "object",
+        "properties" : {
+          "reference" : {
+            "type" : "string",
+            "example" : "m5mwhre1vq7fuh9"
+          },
+          "phone" : {
+            "type" : "string",
+            "example" : "8.03E+9"
+          }
+        }
+      },
+      "body_25" : {
+        "required" : [ "amount", "currency", "customer_note", "merchant_note", "transaction" ],
+        "type" : "object",
+        "properties" : {
+          "transaction" : {
+            "type" : "string",
+            "example" : "12794872"
+          },
+          "amount" : {
+            "type" : "string",
+            "example" : "50000"
+          },
+          "currency" : {
+            "type" : "string",
+            "example" : "NGN"
+          },
+          "merchant_note" : {
+            "type" : "string",
+            "example" : "yada yada"
+          },
+          "customer_note" : {
+            "type" : "string",
+            "example" : "blah blah"
+          }
+        }
+      },
+      "body_26" : {
+        "required" : [ "callback_url", "phone", "verification_type" ],
+        "type" : "object",
+        "properties" : {
+          "verification_type" : {
+            "type" : "string",
+            "example" : "truecaller"
+          },
+          "phone" : {
+            "type" : "string",
+            "example" : "2349012345678"
+          },
+          "callback_url" : {
+            "type" : "string",
+            "example" : "https://linktopage.com/truecaller"
+          }
+        }
+      },
+      "body_27" : {
+        "required" : [ "account_number", "bank_code", "bvn" ],
+        "type" : "object",
+        "properties" : {
+          "bvn" : {
+            "type" : "string",
+            "example" : "12345678912"
+          },
+          "account_number" : {
+            "type" : "string",
+            "example" : "0000000000"
+          },
+          "bank_code" : {
+            "type" : "string",
+            "example" : "87.0"
+          }
+        }
+      },
+      "200_data" : {
+        "type" : "object",
+        "properties" : {
+          "authorization_url" : {
+            "type" : "string",
+            "default" : "https://paystack.com/secure/5q70ef6pu1dq4qn"
+          },
+          "access_code" : {
+            "type" : "string",
+            "default" : "5q70ef6pu1dq4qn"
+          },
+          "reference" : {
+            "type" : "string",
+            "default" : "XXXREF"
+          }
+        }
+      },
+      "201_data_transaction_metadata_custom_fields" : {
+        "type" : "object",
+        "properties" : {
+          "display_name" : {
+            "type" : "string",
+            "default" : "Full Name"
+          },
+          "variable_name" : {
+            "type" : "string",
+            "default" : "Full_Name"
+          },
+          "type" : {
+            "type" : "string",
+            "default" : "text"
+          },
+          "value" : {
+            "type" : "string",
+            "default" : "Stephen Amaza"
+          }
+        }
+      },
+      "201_data_transaction_metadata" : {
+        "type" : "object",
+        "properties" : {
+          "custom_fields" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/201_data_transaction_metadata_custom_fields"
+            }
+          },
+          "referrer" : {
+            "type" : "string",
+            "default" : "http://localhost:8888/page/"
+          }
+        }
+      },
+      "201_data_transaction_log_history" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "default" : "input"
+          },
+          "message" : {
+            "type" : "string",
+            "default" : "Filled these fields: card number, card expiry, card cvv"
+          },
+          "time" : {
+            "type" : "integer",
+            "default" : 45
+          }
+        }
+      },
+      "201_data_transaction_log" : {
+        "type" : "object",
+        "properties" : {
+          "time_spent" : {
+            "type" : "integer",
+            "default" : 48
+          },
+          "attempts" : {
+            "type" : "integer",
+            "default" : 1
+          },
+          "authentication" : { },
+          "errors" : { },
+          "success" : {
+            "type" : "boolean",
+            "default" : true
+          },
+          "mobile" : { },
+          "input" : {
+            "type" : "array",
+            "items" : { }
+          },
+          "channel" : { },
+          "history" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/201_data_transaction_log_history"
+            }
+          }
+        }
+      },
+      "201_data_transaction" : {
+        "type" : "object",
+        "properties" : {
+          "reference" : {
+            "type" : "string",
+            "default" : "1517474242_6122RNV2MR"
+          },
+          "domain" : {
+            "type" : "string",
+            "default" : "test"
+          },
+          "status" : {
+            "type" : "string",
+            "default" : "reversed"
+          },
+          "message" : { },
+          "original_amount" : {
+            "type" : "integer",
+            "default" : 50750
+          },
+          "amount" : {
+            "type" : "integer",
+            "default" : 50750
+          },
+          "authorized_amount" : { },
+          "captured_amount" : { },
+          "gateway" : { },
+          "otp_identifier" : { },
+          "quantity" : {
+            "type" : "integer",
+            "default" : 1
+          },
+          "channel" : {
+            "type" : "string",
+            "default" : "card"
+          },
+          "gateway_response" : {
+            "type" : "string",
+            "default" : "Successful"
+          },
+          "receipt_number" : { },
+          "merchant_transaction_reference" : { },
+          "authorization_code" : {
+            "type" : "string",
+            "default" : "AUTH_jryeoytyxx"
+          },
+          "authorization_url" : { },
+          "authorization_url_valid" : { },
+          "authorization_url_accessed_at" : { },
+          "authorization_url_access_count" : { },
+          "currency" : {
+            "type" : "string",
+            "default" : "NGN"
+          },
+          "logged_for_settlement" : {
+            "type" : "string",
+            "default" : "ignored"
+          },
+          "settled" : {
+            "type" : "boolean",
+            "default" : true
+          },
+          "metadata" : {
+            "$ref" : "#/components/schemas/201_data_transaction_metadata"
+          },
+          "additional_parameters" : { },
+          "response" : { },
+          "transaction_number" : { },
+          "payment_page" : {
+            "type" : "string",
+            "default" : "0"
+          },
+          "bin" : {
+            "type" : "string",
+            "default" : "408408"
+          },
+          "country_code" : { },
+          "ip_address" : {
+            "type" : "string",
+            "default" : "41.184.178.86"
+          },
+          "ip_address_geo" : { },
+          "paidAt" : {
+            "type" : "string",
+            "default" : "2018-02-01T08:38:08.000Z"
+          },
+          "fees" : {
+            "type" : "integer",
+            "default" : 761
+          },
+          "deviceid" : {
+            "type" : "string",
+            "default" : "648cbc1f3cd6f5cfc8e0fc621d33c06e"
+          },
+          "callback_url" : { },
+          "label" : {
+            "type" : "string",
+            "default" : "0"
+          },
+          "dss_verdict" : { },
+          "log" : {
+            "$ref" : "#/components/schemas/201_data_transaction_log"
+          },
+          "subaccount_code" : { },
+          "fees_split" : { },
+          "errorcategory" : { },
+          "errorcode" : { },
+          "id" : {
+            "type" : "integer",
+            "default" : 12794872
+          },
+          "integration" : {
+            "type" : "integer",
+            "default" : 119333
+          },
+          "customer" : {
+            "type" : "integer",
+            "default" : 834733
+          },
+          "coupon" : { },
+          "plan" : { },
+          "subscription" : { },
+          "invoice" : { },
+          "payment_request" : { },
+          "authorization" : {
+            "type" : "integer",
+            "default" : 3878861
+          },
+          "settlement" : { },
+          "subaccount" : { },
+          "createdAt" : {
+            "type" : "string",
+            "default" : "2018-02-01T08:37:24.000Z"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "default" : "2018-02-13T13:57:56.000Z"
+          }
+        }
+      },
+      "201_data" : {
+        "type" : "object",
+        "properties" : {
+          "dispute" : {
+            "type" : "integer",
+            "default" : 5238
+          },
+          "transaction" : {
+            "$ref" : "#/components/schemas/201_data_transaction"
+          },
+          "currency" : {
+            "type" : "string",
+            "default" : "NGN"
+          },
+          "amount" : {
+            "type" : "integer",
+            "default" : 50000
+          },
+          "channel" : { },
+          "customer_note" : {
+            "type" : "string",
+            "default" : "blah blah"
+          },
+          "merchant_note" : {
+            "type" : "string",
+            "default" : "yada yada"
+          },
+          "integration" : {
+            "type" : "integer",
+            "default" : 119333
+          },
+          "domain" : {
+            "type" : "string",
+            "default" : "test"
+          },
+          "status" : {
+            "type" : "string",
+            "default" : "pending"
+          },
+          "refunded_by" : {
+            "type" : "string",
+            "default" : "steve@paystack.com"
+          },
+          "refunded_at" : {
+            "type" : "string",
+            "default" : "2018-02-13T13:57:56.549Z"
+          },
+          "expected_at" : {
+            "type" : "string",
+            "default" : "2018-02-20T13:57:56.000Z"
+          },
+          "fully_deducted" : { },
+          "id" : {
+            "type" : "integer",
+            "default" : 763
+          },
+          "createdAt" : {
+            "type" : "string",
+            "default" : "2018-02-13T13:57:56.551Z"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "default" : "2018-02-13T13:57:56.551Z"
+          }
+        }
+      },
+      "401_data" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "default" : 1
+          },
+          "integration" : {
+            "type" : "integer",
+            "default" : 100982
+          },
+          "domain" : {
+            "type" : "string",
+            "default" : "live"
+          },
+          "transaction" : {
+            "type" : "integer",
+            "default" : 1641
+          },
+          "dispute" : {
+            "type" : "integer",
+            "default" : 20
+          },
+          "amount" : {
+            "type" : "integer",
+            "default" : 500000
+          },
+          "deducted_amount" : {
+            "type" : "integer",
+            "default" : 500000
+          },
+          "currency" : {
+            "type" : "string",
+            "default" : "NGN"
+          },
+          "channel" : {
+            "type" : "string",
+            "default" : "migs"
+          },
+          "fully_deducted" : {
+            "type" : "integer",
+            "default" : 1
+          },
+          "refunded_by" : {
+            "type" : "string",
+            "default" : "customer@gmail.com"
+          },
+          "refunded_at" : {
+            "type" : "string",
+            "default" : "2018-01-12T10:54:47.000Z"
+          },
+          "expected_at" : {
+            "type" : "string",
+            "default" : "2017-10-01T21:10:59.000Z"
+          },
+          "settlement" : { },
+          "customer_note" : {
+            "type" : "string",
+            "default" : "xxx"
+          },
+          "merchant_note" : {
+            "type" : "string",
+            "default" : "xxx"
+          },
+          "created_at" : {
+            "type" : "string",
+            "default" : "2017-09-24T21:10:59.000Z"
+          },
+          "updated_at" : {
+            "type" : "string",
+            "default" : "2018-01-18T11:59:56.000Z"
+          },
+          "status" : {
+            "type" : "string",
+            "default" : "processed"
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "Content-Type" : {
+        "name" : "Content-Types",
+        "in" : "header",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "example" : "application/json"
+        }
+      },
+      "Authorization" : {
+        "name" : "Authorizations",
+        "in" : "header",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "example" : "Bearer "
+        }
+      },
+      "REFERENCE" : {
+        "name" : "REFERENCE",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "example" : "REFERENCE"
+        }
+      },
+      "REFRENCE" : {
+        "name" : "REFRENCE",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "example" : "0tz43d6cgj"
+        }
+      },
+      "id" : {
+        "name" : "id",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "number"
+        }
+      },
+      "id_or_reference" : {
+        "name" : "id_or_reference",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "number"
+        }
+      },
+      "id_or_customer_code" : {
+        "name" : "id_or_customer_code",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "number"
+        }
+      },
+      "ID_OR_CUSTOMER_CODE" : {
+        "name" : "ID_OR_CUSTOMER_CODE",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "number"
+        }
+      },
+      "id_or_slug" : {
+        "name" : "id_or_slug",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "number"
+        }
+      },
+      "id_or_plan_code" : {
+        "name" : "id_or_plan_code",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "number"
+        }
+      },
+      "id_or_subscription_code" : {
+        "name" : "id_or_subscription_code",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "number"
+        }
+      },
+      "id_or_code" : {
+        "name" : "id_or_code",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "number"
+        }
+      },
+      "recipient_code_or_id" : {
+        "name" : "recipient_code_or_id",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "example" : "recipient_code_or_id"
+        }
+      },
+      "reference" : {
+        "name" : "reference",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "example" : "reference"
+        }
+      },
+      "account_number" : {
+        "name" : "account_number",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : "string",
+          "example" : "ACCOUNT_NUMBER"
+        }
+      },
+      "bank_code" : {
+        "name" : "bank_code",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : "string",
+          "example" : "BANK_CODE"
+        }
+      },
+      "BIN" : {
+        "name" : "BIN",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "example" : "BIN"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  }
+}
